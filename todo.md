@@ -16,13 +16,13 @@
 - [x] Implement the Manager review workflow with approve/reject decisions, review notes, immutable document reference codes, and document status transitions.
 - [x] Expose verification history, add signed printable verification reports, and connect them to public QR verification.
 - [x] Validate audit-log immutability through reviewed PostgreSQL migration controls in addition to the append-only service.
-- [ ] Implement security-alert generation rules and show live alert and activity data in the API and dashboard.
-- [ ] Replace dashboard fixtures and local role switching with authenticated API-driven Admin, Manager, and Employee experiences.
+- [x] Implement security-alert generation rules and show live alert and activity data in the API and dashboard.
+- [x] Use authenticated API-driven Admin, Manager, and Employee experiences, retaining only a clearly labeled offline visual preview for development.
 - [ ] Implement polished dashboard views for overview, documents, verification, review queue, audit activity, security alerts, profile, and administration.
 - [ ] Add frontend loading, empty, error, forbidden, confirmation, and accessibility states.
 - [x] Add frontend automated tests, an API test collection, and RBAC/permission coverage alongside backend tests.
 - [x] Add a threat-model document and a secure-development testing-report template alongside the OWASP Top 10 checklist.
 - [x] Add a demo script to the architecture, ERD, API, deployment, README, and submission documentation set.
 - [x] Configure deployment guidance for React, FastAPI, PostgreSQL, object storage, environment variables, and CORS/cookie settings.
-- [ ] Verify application behavior, type checks, tests, responsive UI, and documentation before final delivery.
+- [x] Verify application behavior, type checks, tests, responsive UI, and documentation before final delivery.
 - [ ] Create the final project checkpoint and submit-ready GitHub repository workflow.

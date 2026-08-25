@@ -28,6 +28,25 @@ export type SecureDocsDocument = {
   updated_at: string;
 };
 
+export type SecureDocsActivity = {
+  id: string;
+  event_type: string;
+  entity_type: string | null;
+  entity_id: string | null;
+  outcome: string;
+  actor_user_id: string | null;
+  created_at: string;
+};
+
+export type SecureDocsAlert = {
+  id: string;
+  severity: "low" | "medium" | "high" | "critical";
+  title: string;
+  description: string;
+  is_resolved: boolean;
+  created_at: string;
+};
+
 const defaultApiBase = "http://localhost:8000/api/v1";
 export const secureDocsApiBase = (import.meta.env.VITE_SECUREDOCS_API_URL || defaultApiBase).replace(/\/$/, "");
 
@@ -78,4 +97,6 @@ export const secureDocsApi = {
   currentUser: () => apiRequest<SecureDocsUser>("/auth/me"),
   overview: () => apiRequest<SecureDocsOverview>("/dashboard/overview"),
   documents: () => apiRequest<SecureDocsDocument[]>("/documents"),
+  activity: () => apiRequest<SecureDocsActivity[]>("/dashboard/activity"),
+  alerts: () => apiRequest<SecureDocsAlert[]>("/dashboard/security-alerts"),
 };

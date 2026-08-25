@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useSecureDocsData } from "@/hooks/useSecureDocsData";
-import { uploadSecureDocument } from "@/lib/securedocsApi";
+import { secureDocsApiBase, uploadSecureDocument } from "@/lib/securedocsApi";
 import {
   Activity,
   AlertTriangle,
@@ -139,7 +139,7 @@ function MetricCard({
 }
 
 export default function SecureDocsDashboard() {
-  const { connected, documents: apiDocuments, loading, overview, user } = useSecureDocsData();
+  const { activity: apiActivity, alerts, connected, documents: apiDocuments, loading, overview, user } = useSecureDocsData();
   const [previewRole, setPreviewRole] = useState<Role>("Admin");
   const [search, setSearch] = useState("");
   const [activeNav, setActiveNav] = useState("Overview");
@@ -161,10 +161,19 @@ export default function SecureDocsDashboard() {
       updated: new Date(document.updated_at).toLocaleDateString(),
       status: document.status === "pending_review" ? "Pending review" : document.status[0].toUpperCase() + document.status.slice(1),
       statusTone: document.status === "approved" ? "approved" : document.status === "pending_review" ? "pending" : "revision",
+      apiId: document.id,
     })),
     [apiDocuments, user?.id],
   );
   const visibleDocuments = liveDocuments.length > 0 ? liveDocuments : documents;
+
+  const liveActivity = apiActivity.map((event) => ({
+    id: event.id,
+    title: event.event_type.replaceAll(".", " "),
+    detail: `${event.outcome} · ${new Date(event.created_at).toLocaleString()}`,
+    outcome: event.outcome,
+    tone: event.outcome === "failure" ? "security" : "verified",
+  }));
 
   const filteredDocuments = useMemo(
     () => visibleDocuments.filter((document) => document.name.toLowerCase().includes(search.toLowerCase())),
@@ -312,7 +321,10 @@ export default function SecureDocsDashboard() {
                   <div className="table-row" role="row" key={document.id}>
                     <div className="document-name"><div className="file-badge"><FileText size={16} /></div><div><strong>{document.name}</strong><span>{document.id} · {document.type}</span></div></div>
                     <span className="table-owner">{document.owner}</span><span className="table-muted">{document.updated}</span><StatusPill tone={document.statusTone}>{document.status}</StatusPill>
-                    <button className="row-menu" aria-label={`Open ${document.name}`} onClick={() => setNotice(`${document.name} will open with authorization-aware preview and download controls.`) }><MoreHorizontal size={18} /></button>
+                    <button className="row-menu" aria-label={`Preview ${document.name}`} onClick={() => {
+                      if (user && "apiId" in document) window.open(`${secureDocsApiBase}/documents/${document.apiId}/preview`, "_blank", "noopener,noreferrer");
+                      else setNotice(`${document.name} will open with authorization-aware preview and download controls after you sign in.`);
+                    }}><MoreHorizontal size={18} /></button>
                   </div>
                 ))}
               </div>
@@ -328,9 +340,9 @@ export default function SecureDocsDashboard() {
 
               <section className="security-card">
                 <div className="panel-heading"><div><p className="panel-kicker">Security signal</p><h2>Control center</h2></div><LockKeyhole size={19} /></div>
-                <div className="security-score"><div><strong>94</strong><span>/100</span></div><p>Security posture is strong</p></div>
-                <div className="security-progress"><span style={{ width: "94%" }} /></div>
-                <div className="security-points"><span><CheckCircle2 size={15} /> JWT rotation enabled</span><span><CheckCircle2 size={15} /> 0 critical alerts</span></div>
+                <div className="security-score"><div><strong>{user ? Math.max(0, 100 - alerts.length * 8) : 94}</strong><span>/100</span></div><p>{user ? `${alerts.length} unresolved alerts` : "Security posture is strong"}</p></div>
+                <div className="security-progress"><span style={{ width: `${user ? Math.max(0, 100 - alerts.length * 8) : 94}%` }} /></div>
+                <div className="security-points"><span><CheckCircle2 size={15} /> JWT rotation enabled</span><span><CheckCircle2 size={15} /> {user ? `${alerts.filter((alert) => alert.severity === "critical").length} critical alerts` : "0 critical alerts"}</span></div>
               </section>
             </div>
           </section>
@@ -338,9 +350,11 @@ export default function SecureDocsDashboard() {
           <section className="panel activity-panel">
             <div className="panel-heading"><div><p className="panel-kicker">Immutable audit trail</p><h2>Recent activity</h2></div><button className="text-button" onClick={() => setNotice("Audit events are append-only and include a tamper-evident hash chain.") }>Audit log <ArrowUpRight size={15} /></button></div>
             <div className="activity-list">
+              {liveActivity.length > 0 ? liveActivity.slice(0, 5).map((event) => <div key={event.id}><div className={`activity-icon activity-icon--${event.tone}`}><Activity size={16} /></div><p><strong>{event.title}</strong><span>{event.detail}</span></p><StatusPill tone={event.tone === "security" ? "revision" : "approved"}>{event.outcome}</StatusPill></div>) : <>
               <div><div className="activity-icon activity-icon--upload"><Upload size={16} /></div><p><strong>Vendor Compliance Agreement</strong> was submitted for review<span>Procurement · 48 minutes ago</span></p><StatusPill tone="pending">Pending</StatusPill></div>
               <div><div className="activity-icon activity-icon--verified"><FileCheck2 size={16} /></div><p><strong>Certificate of Incorporation</strong> passed authenticity verification<span>Public verification · 1 hour ago</span></p><StatusPill tone="approved">Verified</StatusPill></div>
               <div><div className="activity-icon activity-icon--security"><KeyRound size={16} /></div><p>Role-sensitive access was reviewed by an administrator<span>Security center · 3 hours ago</span></p><StatusPill tone="neutral">Logged</StatusPill></div>
+              </>}
             </div>
           </section>
 
