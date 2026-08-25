@@ -24,5 +24,5 @@
 - [x] Add a threat-model document and a secure-development testing-report template alongside the OWASP Top 10 checklist.
 - [x] Add a demo script to the architecture, ERD, API, deployment, README, and submission documentation set.
 - [x] Configure deployment guidance for React, FastAPI, PostgreSQL, object storage, environment variables, and CORS/cookie settings.
-- [x] Verify application behavior, type checks, tests, responsive UI, and documentation before final delivery.
+- [ ] Run and document end-to-end staging verification for registration, email delivery, role actions, upload, review, preview, public verification, and alerts once PostgreSQL and SMTP are configured.
 - [ ] Create the final project checkpoint and submit-ready GitHub repository workflow.
