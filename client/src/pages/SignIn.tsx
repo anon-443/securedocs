@@ -30,7 +30,7 @@ export default function SignIn() {
       const body = await response.json().catch(() => null);
       if (!response.ok) throw new Error(body?.detail || "The authentication request could not be completed");
       if (mode === "register") {
-        setMessage("Account created  Check your email to verify your address before signing in");
+        setMessage("Account created — Check your email to verify your address before signing in");
       } else {
         navigate("/workspace");
       }

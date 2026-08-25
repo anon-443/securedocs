@@ -227,7 +227,7 @@ export default function SecureDocsDashboard() {
     }
     setPreviewRole(nextRole);
     setActiveNav(nextRole === "Employee" ? "My workspace" : "Overview");
-    setNotice(`${nextRole} permissions preview enabled.`);
+    setNotice(`${nextRole} permissions preview enabled`);
   };
 
   async function submitUpload(event: React.FormEvent<HTMLFormElement>) {
@@ -237,7 +237,7 @@ export default function SecureDocsDashboard() {
     try {
       await uploadSecureDocument({ file: uploadFile, title: uploadTitle, description: uploadDescription });
       setUploadOpen(false); setUploadFile(null); setUploadTitle(""); setUploadDescription("");
-      setNotice("Document submitted securely for manager review  Refresh the workspace to show the new record");
+      setNotice("Document submitted securely for manager review — Refresh the workspace to show the new record");
     } catch (requestError) {
       setUploadError(requestError instanceof Error ? requestError.message : "The document could not be uploaded");
     } finally { setUploading(false); }
@@ -261,7 +261,7 @@ export default function SecureDocsDashboard() {
     try {
       if (action === "delete") await documentActions.remove(id);
       else await documentActions.review(id, action === "approve" ? "approved" : "rejected");
-      setNotice(action === "delete" ? "Document deleted and audit event recorded" : `Document ${action === "approve" ? "approved" : "rejected"}  Refresh to load the latest registry`);
+      setNotice(action === "delete" ? "Document deleted and audit event recorded" : `Document ${action === "approve" ? "approved" : "rejected"} — Refresh to load the latest registry`);
     } catch (requestError) {
       setNotice(requestError instanceof Error ? requestError.message : "The document action could not be completed");
     } finally { setActingOnDocument(null); }
@@ -273,6 +273,30 @@ export default function SecureDocsDashboard() {
       setNotice("Role assignment recorded in the access audit");
     } catch (requestError) {
       setForbidden(requestError instanceof Error ? requestError.message : "You do not have permission to change this role");
+    }
+  }
+
+  async function handleAvatarUpload(file: File) {
+    if (!user) { setForbidden("Sign in with a verified SecureDocs account to update your profile image"); return; }
+    try {
+      await userActions.uploadAvatar(file);
+      setNotice("Profile image uploaded with validated file handling");
+    } catch (requestError) {
+      setForbidden(requestError instanceof Error ? requestError.message : "Profile image could not be uploaded");
+    }
+  }
+
+  async function handlePasswordChange() {
+    if (!user) { setForbidden("Sign in with a verified SecureDocs account to change your password"); return; }
+    const currentPassword = window.prompt("Enter your current password");
+    if (!currentPassword) return;
+    const newPassword = window.prompt("Enter a new password with 12 or more characters");
+    if (!newPassword) return;
+    try {
+      await userActions.changePassword(currentPassword, newPassword);
+      setNotice("Password changed and the security event was recorded");
+    } catch (requestError) {
+      setForbidden(requestError instanceof Error ? requestError.message : "Password could not be changed");
     }
   }
 
@@ -352,7 +376,7 @@ export default function SecureDocsDashboard() {
           {(notice || loading) && <div className="notice-bar" role="status"><CheckCircle2 size={16} /><span>{notice || "Checking the SecureDocs API session"}</span><button onClick={() => setNotice("")}>{notice ? "Dismiss" : "Working"}</button></div>}
           {forbidden && <div className="forbidden-banner" role="alert"><LockKeyhole size={16} /><span>{forbidden}</span><button onClick={() => setForbidden("")}>Dismiss</button></div>}
 
-          {!loading && !user && <div className="preview-banner"><ShieldCheck size={16} /><span>{connected && !apiError ? "The API is reachable  Sign in through the FastAPI auth flow to load your assigned permissions" : "Preview mode  Start the FastAPI service and sign in to load live role permissions and documents"}</span><a href="/sign-in">Sign in</a></div>}
+          {!loading && !user && <div className="preview-banner"><ShieldCheck size={16} /><span>{connected && !apiError ? "The API is reachable — Sign in through the FastAPI auth flow to load your assigned permissions" : "Preview mode — Start the FastAPI service and sign in to load live role permissions and documents"}</span><a href="/sign-in">Sign in</a></div>}
 
           {isOverview ? <>
           <section className="metrics-grid" aria-label="Workspace summary">
@@ -382,7 +406,7 @@ export default function SecureDocsDashboard() {
                         {(user?.role === "admin" || document.owner === "You") && <button disabled={actingOnDocument === document.apiId} title="Edit title" aria-label={`Edit ${document.name}`} onClick={() => handleDocumentAction(document.apiId, "edit", document.name)}><Pencil size={14} /></button>}
                         {(user?.role === "admin" || user?.role === "manager") && document.status === "Pending review" && <><button disabled={actingOnDocument === document.apiId} title="Approve" aria-label={`Approve ${document.name}`} onClick={() => handleDocumentAction(document.apiId, "approve")}><CheckCircle2 size={15} /></button><button disabled={actingOnDocument === document.apiId} title="Reject" aria-label={`Reject ${document.name}`} onClick={() => handleDocumentAction(document.apiId, "reject")}><Archive size={15} /></button></>}
                         {(user?.role === "admin" || document.owner === "You") && <button disabled={actingOnDocument === document.apiId} title="Delete" aria-label={`Delete ${document.name}`} onClick={() => handleDocumentAction(document.apiId, "delete")}><Trash2 size={15} /></button>}
-                      </> : <button aria-label={`Preview ${document.name}`} onClick={() => setNotice(`${document.name} will open with authorization-aware preview and download controls after you sign in.`)}><MoreHorizontal size={18} /></button>}
+                      </> : <button aria-label={`Preview ${document.name}`} onClick={() => setNotice(`${document.name} will open with authorization-aware preview and download controls after you sign in`)}><MoreHorizontal size={18} /></button>}
                     </div>
                   </div>
                 ))}
@@ -417,7 +441,7 @@ export default function SecureDocsDashboard() {
               </>}
             </div>
           </section>
-          </> : activeNav === "Review queue" ? <ReviewQueuePanel items={pendingReviewItems} onReview={(id, action) => id ? handleDocumentAction(id, action) : setNotice("Sign in to review live pending records")} /> : activeNav === "Profile" ? <ProfilePanel user={user} activity={myActivity} /> : activeNav === "Users & roles" ? <AdministrationPanel users={users} onRoleChange={handleRoleChange} /> : <FocusedWorkspacePanel view={activeNav} role={role} documentCount={visibleDocuments.length} pendingCount={pendingReviewItems.length} alertCount={alerts.length} userName={user?.full_name || "Adeen Shahzad"} />}
+          </> : activeNav === "Review queue" ? <ReviewQueuePanel items={pendingReviewItems} onReview={(id, action) => id ? handleDocumentAction(id, action) : setNotice("Sign in to review live pending records")} /> : activeNav === "Profile" ? <ProfilePanel user={user} activity={myActivity} onAvatarUpload={handleAvatarUpload} onChangePassword={handlePasswordChange} /> : activeNav === "Users & roles" ? <AdministrationPanel users={users} onRoleChange={handleRoleChange} /> : <FocusedWorkspacePanel view={activeNav} role={role} documentCount={visibleDocuments.length} pendingCount={pendingReviewItems.length} alertCount={alerts.length} userName={user?.full_name || "Adeen Shahzad"} />}
 
           {uploadOpen && <div className="upload-overlay" role="presentation"><form onSubmit={submitUpload} className="upload-modal" role="dialog" aria-modal="true" aria-labelledby="upload-title" aria-describedby="upload-description"><div className="panel-heading"><div><p className="panel-kicker">Secure document intake</p><h2 id="upload-title">Upload for review</h2></div><button type="button" className="text-button" onClick={() => setUploadOpen(false)} autoFocus>Close</button></div><p id="upload-description">Files are validated by FastAPI before private storage and audit logging<br />Accepted types: PDF, DOCX, JPG, PNG, and WEBP</p><label>Document title<input required minLength={2} value={uploadTitle} onChange={(event) => setUploadTitle(event.target.value)} /></label><label>Document description <span>optional</span><textarea value={uploadDescription} onChange={(event) => setUploadDescription(event.target.value)} /></label><label>Choose file<input required type="file" accept=".pdf,.docx,image/jpeg,image/png,image/webp" onChange={(event) => setUploadFile(event.target.files?.[0] || null)} /></label>{uploadError && <div className="upload-error" role="alert">{uploadError}</div>}<div className="upload-actions"><button type="button" onClick={() => setUploadOpen(false)}>Cancel</button><Button disabled={uploading}>{uploading ? "Validating & uploading" : "Submit for review"}</Button></div></form></div>}
         </div>
@@ -440,11 +464,13 @@ function FocusedWorkspacePanel({ view, role, documentCount, pendingCount, alertC
 }
 
 function ReviewQueuePanel({ items, onReview }: { items: { id: string | null; label: string; owner: string; type: string }[]; onReview: (id: string | null, action: "approve" | "reject") => void }) {
-  return <section className="focused-panel review-panel"><header><div><p className="panel-kicker">Review queue</p><h2>Give every decision a record</h2><p>Approve a complete record or return it for revision with the document context intact</p></div><div className="focused-metric"><strong>{items.length}</strong><span>Pending decisions</span></div></header><div className="review-list">{items.length ? items.map((item) => <article key={item.label}><div className="file-badge"><FileText size={16} /></div><div><strong>{item.label}</strong><span>{item.owner} · {item.type}</span></div><div className="review-actions"><button onClick={() => onReview(item.id, "reject")}>Request revision</button><button onClick={() => onReview(item.id, "approve")}>Approve record</button></div></article>) : <div className="review-empty"><CheckCircle2 size={20} /> No pending records in this queue</div>}</div></section>;
+  const [format, setFormat] = useState("all");
+  const displayedItems = format === "all" ? items : items.filter((item) => item.type === format);
+  return <section className="focused-panel review-panel"><header><div><p className="panel-kicker">Review queue</p><h2>Give every decision a record</h2><p>Approve a complete record or return it for revision with the document context intact</p></div><div className="focused-metric"><strong>{displayedItems.length}</strong><span>Pending decisions</span></div></header><div className="queue-filter"><span>Filter pending format</span><select value={format} onChange={(event) => setFormat(event.target.value)} aria-label="Filter review queue by file format"><option value="all">All formats</option><option value="PDF">PDF</option><option value="DOCX">DOCX</option><option value="PNG">PNG</option></select></div><div className="review-list">{displayedItems.length ? displayedItems.map((item) => <article key={item.label}><div className="file-badge"><FileText size={16} /></div><div><strong>{item.label}</strong><span>{item.owner} · {item.type}</span></div><div className="review-actions"><button onClick={() => onReview(item.id, "reject")}>Request revision</button><button onClick={() => onReview(item.id, "approve")}>Approve record</button></div></article>) : <div className="review-empty"><CheckCircle2 size={20} /> No pending records match this filter</div>}</div></section>;
 }
 
-function ProfilePanel({ user, activity }: { user: SecureDocsUser | null; activity: SecureDocsActivity[] }) {
-  return <section className="focused-panel profile-panel"><header><div><p className="panel-kicker">Profile and account</p><h2>{user ? user.full_name : "Your secure identity"}</h2><p>{user ? `${user.email} · ${user.role} role` : "Sign in to view your profile, account activity, and security controls"}</p></div><div className="focused-metric"><strong>{activity.length}</strong><span>Recent account events</span></div></header><div className="profile-grid"><article><span>Account status</span><strong>{user?.email_verified_at ? "Verified email" : "Verification required"}</strong><p>Profile updates and password changes are protected by your secure session</p></article><article><span>Activity history</span><strong>{activity.length ? activity[0]?.event_type.replaceAll(".", " ") : "No live activity loaded"}</strong><p>{activity.length ? new Date(activity[0].created_at).toLocaleString() : "Connect the API to view personal security history"}</p></article><article><span>Profile image</span><strong>Secure avatar upload</strong><p>Image validation and generated storage keys protect profile media</p></article></div></section>;
+function ProfilePanel({ user, activity, onAvatarUpload, onChangePassword }: { user: SecureDocsUser | null; activity: SecureDocsActivity[]; onAvatarUpload: (file: File) => void; onChangePassword: () => void }) {
+  return <section className="focused-panel profile-panel"><header><div><p className="panel-kicker">Profile and account</p><h2>{user ? user.full_name : "Your secure identity"}</h2><p>{user ? `${user.email} · ${user.role} role` : "Sign in to view your profile, account activity, and security controls"}</p></div><div className="focused-metric"><strong>{activity.length}</strong><span>Recent account events</span></div></header><div className="profile-grid"><article><span>Account status</span><strong>{user?.email_verified_at ? "Verified email" : "Verification required"}</strong><p>Profile updates and password changes are protected by your secure session</p><button onClick={onChangePassword}>Change password</button></article><article><span>Activity history</span><strong>{activity.length ? activity[0]?.event_type.replaceAll(".", " ") : "No live activity loaded"}</strong><p>{activity.length ? new Date(activity[0].created_at).toLocaleString() : "Connect the API to view personal security history"}</p></article><article><span>Profile image</span><strong>Secure avatar upload</strong><p>Image validation and generated storage keys protect profile media</p><label className="avatar-upload">Choose image<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => { const file = event.target.files?.[0]; if (file) onAvatarUpload(file); }} /></label></article></div></section>;
 }
 
 function AdministrationPanel({ users, onRoleChange }: { users: SecureDocsUser[]; onRoleChange: (id: string, role: "admin" | "manager" | "employee") => void }) {

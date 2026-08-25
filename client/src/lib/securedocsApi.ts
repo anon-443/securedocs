@@ -122,6 +122,13 @@ export const documentActions = {
 export const userActions = {
   updateProfile: (changes: { full_name?: string }) => csrfMutation<SecureDocsUser>("/users/me", "PATCH", changes),
   changeRole: (id: string, role: SecureDocsRole) => csrfMutation<SecureDocsUser>(`/users/${id}/role`, "PATCH", { role }),
+  changePassword: (currentPassword: string, newPassword: string) => csrfMutation<void>("/auth/change-password", "POST", { current_password: currentPassword, new_password: newPassword }),
+  uploadAvatar: async (file: File): Promise<SecureDocsUser> => {
+    const csrf = csrfToken();
+    const form = new FormData();
+    form.append("file", file);
+    return apiRequest<SecureDocsUser>("/users/me/avatar", { method: "POST", body: form, headers: csrf ? { "X-CSRF-Token": csrf } : {} });
+  },
 };
 
 export const secureDocsApi = {

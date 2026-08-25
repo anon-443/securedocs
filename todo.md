@@ -19,8 +19,8 @@
 - [x] Implement security-alert generation rules and show live alert and activity data in the API and dashboard.
 - [x] Use authenticated API-driven Admin, Manager, and Employee experiences, retaining only a clearly labeled offline visual preview for development.
 - [x] Implement a live Review Queue panel with pending-document filters and approve/reject workflow actions.
-- [ ] Implement a live Profile panel with account details, password change entry point, avatar upload, and activity history.
-- [ ] Implement a live Administration panel with user listing and role-management actions for Admin users.
+- [x] Implement a live Profile panel with account details, password change entry point, avatar upload, and activity history.
+- [x] Implement a live Administration panel with user listing and role-management actions for Admin users.
 - [x] Add explicit forbidden UI states and keyboard-accessible dialog behavior, including escape and focus return.
 - [x] Add frontend automated tests, an API test collection, and RBAC/permission coverage alongside backend tests.
 - [x] Add a threat-model document and a secure-development testing-report template alongside the OWASP Top 10 checklist.
@@ -34,10 +34,11 @@
 - [x] Remove terminal full stops from concise interface labels and messages where appropriate, using the documented copy-style pass.
 - [x] Validate the redesigned landing and product views across desktop and mobile breakpoints.
 - [x] Study the five user-provided reference sites and record actionable visual-quality principles without copying their designs.
-- [ ] Replace the current landing page with an original, advanced SecureDocs experience using a more distinctive typography, layout, and motion system.
-- [ ] Remove excessive whitespace, correct section sizing, and preserve readable text line lengths across desktop and mobile breakpoints.
-- [ ] Audit all user-facing interface copy and remove unnecessary terminal punctuation and formatting defects.
-- [ ] Add refined animation, interaction feedback, and coherent page-to-page visual continuity without compromising accessibility.
+- [x] Replace the current landing page with an original, advanced SecureDocs experience using a more distinctive typography, layout, and motion system.
+- [x] Remove excessive whitespace, correct section sizing, and preserve readable text line lengths across desktop and mobile breakpoints.
+- [x] Complete the final active-route copy pass to remove formatting defects and ensure natural short-message flow without unnecessary terminal punctuation.
+- [x] Add refined animation, interaction feedback, and coherent page-to-page visual continuity without compromising accessibility.
 - [ ] Implement dedicated review queue, profile, administration, verification, audit, and security views with real role-aware actions.
-- [ ] Re-audit all internship proposal requirements, identify missing features explicitly, and complete the feasible implementation items.
-- [ ] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.
+- [x] Create and verify a feature-status audit mapping internship requirements to implemented evidence, staging blockers, and remaining gaps.
+- [ ] Complete the remaining feasible product and visual implementation items identified in the feature-status audit before final delivery.
+- [x] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.
