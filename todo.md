@@ -12,14 +12,14 @@
 - [x] Enforce Admin, Manager, and Employee permissions consistently in FastAPI dependencies, user-management endpoints, and dashboard role actions.
 - [x] Implement profile management, validated avatar upload, password changes, and user activity history.
 - [x] Implement secure document upload validation for PDF, DOCX, and image types with file size limits, generated storage keys, and metadata persistence.
-- [ ] Add authorization-aware previews for supported document types and connect browsing, category filters, search, updates, deletes, and secure downloads to the dashboard.
+- [x] Add authorization-aware previews for supported document types and connect browsing, category filters, search, updates, deletes, and secure downloads to the dashboard.
 - [x] Implement the Manager review workflow with approve/reject decisions, review notes, immutable document reference codes, and document status transitions.
 - [x] Expose verification history, add signed printable verification reports, and connect them to public QR verification.
 - [x] Validate audit-log immutability through reviewed PostgreSQL migration controls in addition to the append-only service.
 - [x] Implement security-alert generation rules and show live alert and activity data in the API and dashboard.
 - [x] Use authenticated API-driven Admin, Manager, and Employee experiences, retaining only a clearly labeled offline visual preview for development.
-- [ ] Implement polished dashboard views for overview, documents, verification, review queue, audit activity, security alerts, profile, and administration.
-- [ ] Add frontend loading, empty, error, forbidden, confirmation, and accessibility states.
+- [ ] Implement dedicated review-queue, profile, and administration dashboard panels instead of placeholder navigation notices.
+- [ ] Add explicit forbidden UI states and comprehensive accessible dialog behavior, including escape, focus management, and focus return.
 - [x] Add frontend automated tests, an API test collection, and RBAC/permission coverage alongside backend tests.
 - [x] Add a threat-model document and a secure-development testing-report template alongside the OWASP Top 10 checklist.
 - [x] Add a demo script to the architecture, ERD, API, deployment, README, and submission documentation set.

@@ -143,7 +143,7 @@ function MetricCard({
 }
 
 export default function SecureDocsDashboard() {
-  const { activity: apiActivity, alerts, categories, connected, documents: apiDocuments, loading, overview, user } = useSecureDocsData();
+  const { activity: apiActivity, alerts, categories, connected, documents: apiDocuments, error: apiError, loading, overview, user } = useSecureDocsData();
   const [previewRole, setPreviewRole] = useState<Role>("Admin");
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -328,7 +328,7 @@ export default function SecureDocsDashboard() {
             </Button>
           </section>
 
-          {(notice || loading) && <div className="notice-bar"><CheckCircle2 size={16} /><span>{notice || "Checking the SecureDocs API session…"}</span><button onClick={() => setNotice("")}>{notice ? "Dismiss" : "Working"}</button></div>}
+          {(notice || loading || apiError) && <div className="notice-bar" role="status"><CheckCircle2 size={16} /><span>{notice || apiError || "Checking the SecureDocs API session"}</span><button onClick={() => setNotice("")}>{notice ? "Dismiss" : loading ? "Working" : "Details"}</button></div>}
 
           {!loading && !user && <div className="preview-banner"><ShieldCheck size={16} /><span>{connected ? "The API is reachable  Sign in through the FastAPI auth flow to load your assigned permissions" : "Local visual preview  Connect the FastAPI service and sign in to load live role permissions and documents"}</span><a href="/sign-in">Sign in</a></div>}
 
@@ -363,6 +363,7 @@ export default function SecureDocsDashboard() {
                     </div>
                   </div>
                 ))}
+                {!loading && filteredDocuments.length === 0 && <div className="empty-documents" role="status"><FileText size={18} /><p><strong>No matching documents</strong><span>Adjust your search or category filter</span></p></div>}
               </div>
             </div>
 

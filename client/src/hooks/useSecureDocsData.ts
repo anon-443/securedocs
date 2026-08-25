@@ -19,6 +19,7 @@ type SecureDocsDataState = {
   categories: SecureDocsCategory[];
   loading: boolean;
   connected: boolean;
+  error: string | null;
 };
 
 const emptyState: SecureDocsDataState = {
@@ -30,6 +31,7 @@ const emptyState: SecureDocsDataState = {
   categories: [],
   loading: true,
   connected: false,
+  error: null,
 };
 
 export function useSecureDocsData() {
@@ -47,11 +49,12 @@ export function useSecureDocsData() {
           secureDocsApi.alerts().catch(() => []),
           secureDocsApi.categories().catch(() => []),
         ]);
-        if (active) setState({ user, overview, documents, activity, alerts, categories, loading: false, connected: true });
+        if (active) setState({ user, overview, documents, activity, alerts, categories, loading: false, connected: true, error: null });
       } catch (error) {
         if (!active) return;
         const isUnauthenticated = error instanceof SecureDocsApiError && error.status === 401;
-        setState({ ...emptyState, loading: false, connected: !isUnauthenticated });
+        const message = error instanceof Error ? error.message : "Unable to load the SecureDocs workspace";
+        setState({ ...emptyState, loading: false, connected: !isUnauthenticated, error: isUnauthenticated ? null : message });
       }
     }
     void load();
