@@ -6,12 +6,14 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import PublicVerification from "./pages/PublicVerification";
+import SignIn from "./pages/SignIn";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/sign-in"} component={SignIn} />
       <Route path={"/verify/:reference"} component={PublicVerification} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

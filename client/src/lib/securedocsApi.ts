@@ -50,6 +50,30 @@ async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+function csrfToken(): string | null {
+  const match = document.cookie.match(/(?:^|; )sd_csrf=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+export async function uploadSecureDocument(input: {
+  file: File;
+  title: string;
+  description?: string;
+  categoryId?: string;
+}): Promise<SecureDocsDocument> {
+  const form = new FormData();
+  form.append("file", input.file);
+  form.append("title", input.title);
+  if (input.description) form.append("description", input.description);
+  if (input.categoryId) form.append("category_id", input.categoryId);
+  const csrf = csrfToken();
+  return apiRequest<SecureDocsDocument>("/documents", {
+    method: "POST",
+    body: form,
+    headers: csrf ? { "X-CSRF-Token": csrf } : {},
+  });
+}
+
 export const secureDocsApi = {
   currentUser: () => apiRequest<SecureDocsUser>("/auth/me"),
   overview: () => apiRequest<SecureDocsOverview>("/dashboard/overview"),

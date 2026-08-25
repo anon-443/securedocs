@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useSecureDocsData } from "@/hooks/useSecureDocsData";
+import { uploadSecureDocument } from "@/lib/securedocsApi";
 import {
   Activity,
   AlertTriangle,
@@ -143,6 +144,12 @@ export default function SecureDocsDashboard() {
   const [search, setSearch] = useState("");
   const [activeNav, setActiveNav] = useState("Overview");
   const [notice, setNotice] = useState("");
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploadTitle, setUploadTitle] = useState("");
+  const [uploadDescription, setUploadDescription] = useState("");
+  const [uploadError, setUploadError] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const role: Role = user ? roleLabels[user.role] : previewRole;
   const liveDocuments = useMemo(
@@ -194,6 +201,19 @@ export default function SecureDocsDashboard() {
     setActiveNav(nextRole === "Employee" ? "My workspace" : "Overview");
     setNotice(`${nextRole} permissions preview enabled.`);
   };
+
+  async function submitUpload(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!uploadFile) { setUploadError("Choose a PDF, DOCX, JPG, PNG, or WEBP file first."); return; }
+    setUploading(true); setUploadError("");
+    try {
+      await uploadSecureDocument({ file: uploadFile, title: uploadTitle, description: uploadDescription });
+      setUploadOpen(false); setUploadFile(null); setUploadTitle(""); setUploadDescription("");
+      setNotice("Document submitted securely for manager review. Refreshing the workspace will show the new record.");
+    } catch (requestError) {
+      setUploadError(requestError instanceof Error ? requestError.message : "The document could not be uploaded.");
+    } finally { setUploading(false); }
+  }
 
   const liveMetrics = overview ? [
     { label: "Total documents", value: String(overview.total_documents), trend: "Live API total", icon: FileText, accent: "blue" as const },
@@ -263,14 +283,14 @@ export default function SecureDocsDashboard() {
               <h1>{role === "Employee" ? "Good morning, Adeen." : "Document intelligence, protected."}</h1>
               <p>{roleDescriptions[role]}</p>
             </div>
-            <Button className="upload-button" onClick={() => setNotice("Upload flow will validate PDF, DOCX, and image content through FastAPI.") }>
+            <Button className="upload-button" onClick={() => user ? setUploadOpen(true) : setNotice("Sign in with a verified SecureDocs account before uploading a document.") }>
               <Plus size={17} /> Upload document
             </Button>
           </section>
 
           {(notice || loading) && <div className="notice-bar"><CheckCircle2 size={16} /><span>{notice || "Checking the SecureDocs API session…"}</span><button onClick={() => setNotice("")}>{notice ? "Dismiss" : "Working"}</button></div>}
 
-          {!loading && !user && <div className="preview-banner"><ShieldCheck size={16} /><span>{connected ? "The API is reachable. Sign in through the FastAPI auth flow to load your assigned permissions." : "Local visual preview: connect the FastAPI service and sign in to load live role permissions and documents."}</span></div>}
+          {!loading && !user && <div className="preview-banner"><ShieldCheck size={16} /><span>{connected ? "The API is reachable. Sign in through the FastAPI auth flow to load your assigned permissions." : "Local visual preview: connect the FastAPI service and sign in to load live role permissions and documents."}</span><a href="/sign-in">Sign in</a></div>}
 
           <section className="metrics-grid" aria-label="Workspace summary">
             {liveMetrics.map((metric) => <MetricCard key={metric.label} {...metric} />)}
@@ -323,6 +343,8 @@ export default function SecureDocsDashboard() {
               <div><div className="activity-icon activity-icon--security"><KeyRound size={16} /></div><p>Role-sensitive access was reviewed by an administrator<span>Security center · 3 hours ago</span></p><StatusPill tone="neutral">Logged</StatusPill></div>
             </div>
           </section>
+
+          {uploadOpen && <div className="upload-overlay" role="presentation"><form onSubmit={submitUpload} className="upload-modal" aria-labelledby="upload-title"><div className="panel-heading"><div><p className="panel-kicker">Secure document intake</p><h2 id="upload-title">Upload for review</h2></div><button type="button" className="text-button" onClick={() => setUploadOpen(false)}>Close</button></div><p>Files are validated by FastAPI before private storage and audit logging. Accepted types: PDF, DOCX, JPG, PNG, and WEBP.</p><label>Document title<input required minLength={2} value={uploadTitle} onChange={(event) => setUploadTitle(event.target.value)} /></label><label>Document description <span>optional</span><textarea value={uploadDescription} onChange={(event) => setUploadDescription(event.target.value)} /></label><label>Choose file<input required type="file" accept=".pdf,.docx,image/jpeg,image/png,image/webp" onChange={(event) => setUploadFile(event.target.files?.[0] || null)} /></label>{uploadError && <div className="upload-error" role="alert">{uploadError}</div>}<div className="upload-actions"><button type="button" onClick={() => setUploadOpen(false)}>Cancel</button><Button disabled={uploading}>{uploading ? "Validating & uploading…" : "Submit for review"}</Button></div></form></div>}
         </div>
       </main>
     </div>

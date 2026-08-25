@@ -1,10 +1,10 @@
 # SecureDocs Project TODO
 
-- [ ] Create scoped conventional commits for completed work and push them to the private GitHub remote.
+- [x] Create scoped conventional commits for completed work and push them to the private GitHub remote.
 - [x] Establish the monorepo structure for the React application, FastAPI service, documentation, tests, and deployment assets.
 - [x] Add a safe environment-variable contract, repository hygiene files, contribution workflow, and issue templates.
 - [x] Write the architecture decision record explaining the React + FastAPI + PostgreSQL deployment topology.
-- [ ] Create a normalized PostgreSQL schema for users, refresh tokens, password-reset tokens, categories, documents, document versions, reviews, verification events, and audit events.
+- [x] Create a normalized PostgreSQL schema for users, refresh tokens, password-reset tokens, categories, documents, document versions, reviews, verification events, and audit events.
 - [x] Validate reviewed Alembic migrations, indexes, foreign keys, status constraints, and immutable reference-code safeguards.
 - [x] Implement FastAPI settings, database session management, error handling, router/service structure, health endpoint, and OpenAPI metadata.
 - [x] Connect email-verification and password-reset tokens to an SMTP-ready delivery service, enforce verified-email login, and complete the development auth flow end to end.
