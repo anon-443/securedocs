@@ -11,4 +11,8 @@ At a 375 px mobile viewport, the navigation rail collapses cleanly, the role sel
 
 The redesigned landing page was checked at desktop and 375 px mobile widths. It maintains a strong first-screen hierarchy, keeps primary access actions visible, and uses navy, teal, mint, audit-code, and verification motifs consistently. The mobile sign-in surface now inherits the dark system across the entire viewport without the former white outer margin.
 
+The rebuilt landing page was reviewed at desktop width. The replacement resolves the earlier oversized dead zones and crowded generic card treatment with a compact editorial grid, evidence-ledger hero, technical labels, and structured intake-to-proof narrative. The next interface pass should extend this forensic ledger motif into the operational workspace rather than repeating generic dashboard cards.
+
+The rebuilt landing, workspace, sign-in, and public verification screens were also checked at 375 px. The landing hierarchy and two actions remain visible without horizontal overflow, the workspace summary reflows to one column with a full-width primary action, and dark surfaces remain continuous across the sign-in flow. The public verification fallback remains visually clear while the FastAPI service is unavailable locally; its error copy was adjusted for readable separation without terminal punctuation.
+
 The review confirmed that no user reviews, ratings, or testimonials are displayed anywhere in the interface.

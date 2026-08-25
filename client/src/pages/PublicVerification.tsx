@@ -52,7 +52,7 @@ export default function PublicVerification() {
           </div>
           <p className="public-eyebrow">Document authenticity result</p>
           <h1>{isValid ? "Reference verified" : "Verification unavailable"}</h1>
-          <p className="public-message">{result?.message || `${error} Connect the FastAPI verifier to retrieve audit-grade authenticity evidence.`}</p>
+          <p className="public-message">{result?.message || `${error} — Connect the FastAPI verifier to retrieve audit-grade authenticity evidence`}</p>
           <div className="public-details">
             <div className="public-detail-row"><span>Reference code</span><strong className="public-code">{result?.reference_code || reference}</strong></div>
             {isValid && <><div className="public-detail-row"><span>Document title</span><strong>{result?.title}</strong></div><div className="public-detail-row"><span>Approval status</span><strong className="public-approved">{result?.status}</strong></div><div className="public-detail-row"><span>Approved date</span><strong>{result?.approved_at ? new Date(result.approved_at).toLocaleDateString() : "—"}</strong></div></>}

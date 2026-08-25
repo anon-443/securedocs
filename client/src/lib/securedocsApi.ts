@@ -119,6 +119,11 @@ export const documentActions = {
   downloadUrl: (id: string) => `${secureDocsApiBase}/documents/${id}/download`,
 };
 
+export const userActions = {
+  updateProfile: (changes: { full_name?: string }) => csrfMutation<SecureDocsUser>("/users/me", "PATCH", changes),
+  changeRole: (id: string, role: SecureDocsRole) => csrfMutation<SecureDocsUser>(`/users/${id}/role`, "PATCH", { role }),
+};
+
 export const secureDocsApi = {
   currentUser: () => apiRequest<SecureDocsUser>("/auth/me"),
   overview: () => apiRequest<SecureDocsOverview>("/dashboard/overview"),
@@ -126,4 +131,6 @@ export const secureDocsApi = {
   activity: () => apiRequest<SecureDocsActivity[]>("/dashboard/activity"),
   alerts: () => apiRequest<SecureDocsAlert[]>("/dashboard/security-alerts"),
   categories: () => apiRequest<SecureDocsCategory[]>("/documents/categories"),
+  myActivity: () => apiRequest<SecureDocsActivity[]>("/users/me/activity"),
+  users: () => apiRequest<SecureDocsUser[]>("/users"),
 };
