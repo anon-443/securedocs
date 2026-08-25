@@ -66,6 +66,7 @@ class UserResponse(BaseModel):
     full_name: str
     role: UserRole
     is_active: bool
+    profile_image_key: str | None
     email_verified_at: datetime | None
     created_at: datetime
 

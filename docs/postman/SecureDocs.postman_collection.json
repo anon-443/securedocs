@@ -1,0 +1,45 @@
+{
+  "info": {
+    "name": "SecureDocs API",
+    "description": "Functional and security-oriented API checks for the SecureDocs internship project.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000/api/v1" },
+    { "key": "referenceCode", "value": "SD-2026-REPLACE" },
+    { "key": "documentId", "value": "replace-document-id" },
+    { "key": "csrfToken", "value": "replace-after-login" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        { "name": "Register", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/auth/register", "body": { "mode": "raw", "raw": "{\n  \"email\": \"employee@example.com\",\n  \"full_name\": \"Employee User\",\n  \"password\": \"SecureDocs!2026\"\n}" } } },
+        { "name": "Login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/auth/login", "body": { "mode": "raw", "raw": "{\n  \"email\": \"employee@example.com\",\n  \"password\": \"SecureDocs!2026\"\n}" } } },
+        { "name": "Current user", "request": { "method": "GET", "url": "{{baseUrl}}/auth/me" } }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        { "name": "List documents", "request": { "method": "GET", "url": "{{baseUrl}}/documents" } },
+        { "name": "Preview document", "request": { "method": "GET", "url": "{{baseUrl}}/documents/{{documentId}}/preview" } },
+        { "name": "Download document", "request": { "method": "GET", "url": "{{baseUrl}}/documents/{{documentId}}/download" } }
+      ]
+    },
+    {
+      "name": "Verification",
+      "item": [
+        { "name": "Public verification", "request": { "method": "GET", "url": "{{baseUrl}}/verify/{{referenceCode}}" } },
+        { "name": "QR image", "request": { "method": "GET", "url": "{{baseUrl}}/verify/{{referenceCode}}/qr" } }
+      ]
+    },
+    {
+      "name": "Security checks",
+      "item": [
+        { "name": "CSRF rejection check", "request": { "method": "POST", "url": "{{baseUrl}}/auth/logout" } },
+        { "name": "Admin security alerts", "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/security-alerts" } }
+      ]
+    }
+  ]
+}

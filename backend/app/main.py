@@ -11,7 +11,7 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.extension import _rate_limit_exceeded_handler
 from sqlalchemy import text
 
-from app.api.routers import auth, dashboard, documents, verification
+from app.api.routers import auth, dashboard, documents, users, verification
 from app.core.config import get_settings
 from app.db.session import SessionLocal
 
@@ -79,6 +79,7 @@ app.include_router(auth.router, prefix=settings.api_v1_prefix)
 app.include_router(documents.router, prefix=settings.api_v1_prefix)
 app.include_router(verification.router, prefix=settings.api_v1_prefix)
 app.include_router(dashboard.router, prefix=settings.api_v1_prefix)
+app.include_router(users.router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/health", tags=["System"])

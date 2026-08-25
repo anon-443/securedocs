@@ -9,5 +9,6 @@ FastAPI automatically exposes the current interactive contract at `/docs` and th
 | Categories | `GET /api/v1/documents/categories`, `POST /categories` | All authenticated users may list; Admin creates |
 | Verification | `GET /api/v1/verify/{reference_code}`, `GET /{reference_code}/qr` | Public, rate-limited, privacy-minimal |
 | Dashboard | `GET /api/v1/dashboard/overview`, `/activity`, `/security-alerts` | Results limited by role |
+| Users and roles | `PATCH /api/v1/users/me`, `POST /me/avatar`, `GET /me/activity`, `GET /users`, `PATCH /{user_id}/role` | Profile routes are owner-only; user listing and role assignment are Admin-only |
 
 The API keeps access tokens short-lived and stores refresh sessions as token hashes. A client must never persist passwords or raw refresh tokens in local storage. Production documentation must be regenerated from the live OpenAPI contract after each endpoint change.

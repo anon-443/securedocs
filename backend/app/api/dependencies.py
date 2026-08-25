@@ -48,6 +48,10 @@ def require_roles(*roles: UserRole) -> Callable[[User], User]:
     return dependency
 
 
+AdminUser = Annotated[User, Depends(require_roles(UserRole.ADMIN))]
+ManagerOrAdminUser = Annotated[User, Depends(require_roles(UserRole.ADMIN, UserRole.MANAGER))]
+
+
 def enforce_csrf(
     request: Request,
     csrf_cookie: Annotated[str | None, Cookie(alias="sd_csrf")] = None,
