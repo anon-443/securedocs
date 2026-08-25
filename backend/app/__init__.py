@@ -1,0 +1,1 @@
+"""SecureDocs FastAPI application package."""

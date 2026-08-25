@@ -1,0 +1,28 @@
+# SecureDocs Project TODO
+
+- [ ] Create scoped conventional commits for completed work and push them to the private GitHub remote.
+- [x] Establish the monorepo structure for the React application, FastAPI service, documentation, tests, and deployment assets.
+- [x] Add a safe environment-variable contract, repository hygiene files, contribution workflow, and issue templates.
+- [x] Write the architecture decision record explaining the React + FastAPI + PostgreSQL deployment topology.
+- [ ] Create a normalized PostgreSQL schema for users, refresh tokens, password-reset tokens, categories, documents, document versions, reviews, verification events, and audit events.
+- [x] Validate reviewed Alembic migrations, indexes, foreign keys, status constraints, and immutable reference-code safeguards.
+- [x] Implement FastAPI settings, database session management, error handling, router/service structure, health endpoint, and OpenAPI metadata.
+- [x] Connect email-verification and password-reset tokens to an SMTP-ready delivery service, enforce verified-email login, and complete the development auth flow end to end.
+- [x] Add CSRF-aware cookie handling, strict input validation, rate-limit design, safe error messages, and security response headers.
+- [ ] Enforce Admin, Manager, and Employee permissions consistently in backend dependencies and authenticated frontend actions.
+- [ ] Implement profile management, avatar metadata, password changes, and user activity history.
+- [x] Implement secure document upload validation for PDF, DOCX, and image types with file size limits, generated storage keys, and metadata persistence.
+- [ ] Add authorization-aware previews for supported document types and connect browsing, category filters, search, updates, deletes, and secure downloads to the dashboard.
+- [x] Implement the Manager review workflow with approve/reject decisions, review notes, immutable document reference codes, and document status transitions.
+- [ ] Expose verification history, add tamper-evident printable verification reports, and connect them to public QR verification.
+- [x] Validate audit-log immutability through reviewed PostgreSQL migration controls in addition to the append-only service.
+- [ ] Implement security-alert generation rules and show live alert and activity data in the API and dashboard.
+- [ ] Replace dashboard fixtures and local role switching with authenticated API-driven Admin, Manager, and Employee experiences.
+- [ ] Implement polished dashboard views for overview, documents, verification, review queue, audit activity, security alerts, profile, and administration.
+- [ ] Add frontend loading, empty, error, forbidden, confirmation, and accessibility states.
+- [ ] Add frontend automated tests, an API test collection, and explicit end-to-end RBAC/permission coverage alongside backend tests.
+- [ ] Add a threat-model document and a secure-development testing-report template alongside the OWASP Top 10 checklist.
+- [ ] Add a demo script to the architecture, ERD, API, deployment, README, and submission documentation set.
+- [x] Configure deployment guidance for React, FastAPI, PostgreSQL, object storage, environment variables, and CORS/cookie settings.
+- [ ] Verify application behavior, type checks, tests, responsive UI, and documentation before final delivery.
+- [ ] Create the final project checkpoint and submit-ready GitHub repository workflow.
