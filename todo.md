@@ -41,4 +41,7 @@
 - [x] Implement dedicated review queue, profile, administration, verification, audit, and security views with real role-aware actions.
 - [x] Create and verify a feature-status audit mapping internship requirements to implemented evidence, staging blockers, and remaining gaps.
 - [ ] Complete the remaining feasible product and visual implementation items identified in the feature-status audit before final delivery.
+- [x] Enlarge and rebalance the SecureDocs evidence card with clear data alignment and stronger visual hierarchy.
+- [x] Reformat the landing hero headline and supporting text into intentional readable lines without excessive empty space or awkward wrapping.
+- [x] Verify the refined landing hero at desktop and mobile widths before saving the visual update.
 - [x] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.

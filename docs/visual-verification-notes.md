@@ -18,3 +18,5 @@ The rebuilt landing, workspace, sign-in, and public verification screens were al
 The dedicated Review Queue, Verification, Audit, and Security panels were opened through direct workspace panel links and reviewed at desktop width. Each panel shows its distinct custody-focused hierarchy, role-appropriate metrics, and a truthful empty or preview state when the FastAPI service has not been started locally. The Review Queue additionally displays its pending-format filter and review actions.
 
 The review confirmed that no user reviews, ratings, or testimonials are displayed anywhere in the interface.
+
+The refined landing hero was checked at 1440 px desktop and 390 px mobile widths. The evidence ledger now uses a larger, right-weighted card with aligned label/value rows, readable technical metadata, and a coherent proof-chain footer. The hero headline now has two intentional desktop lines and reflows naturally on mobile without oversized empty zones or awkward word breaks.
