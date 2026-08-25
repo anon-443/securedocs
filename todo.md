@@ -44,4 +44,6 @@
 - [x] Enlarge and rebalance the SecureDocs evidence card with clear data alignment and stronger visual hierarchy.
 - [x] Reformat the landing hero headline and supporting text into intentional readable lines without excessive empty space or awkward wrapping.
 - [x] Verify the refined landing hero at desktop and mobile widths before saving the visual update.
+- [x] Reduce the evidence-card footprint while preserving aligned proof metadata and responsive readability.
+- [x] Re-verify the reduced evidence card at mobile width and record proof-metadata readability after the compact-size change.
 - [x] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.

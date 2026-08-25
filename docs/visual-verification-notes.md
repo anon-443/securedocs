@@ -20,3 +20,7 @@ The dedicated Review Queue, Verification, Audit, and Security panels were opened
 The review confirmed that no user reviews, ratings, or testimonials are displayed anywhere in the interface.
 
 The refined landing hero was checked at 1440 px desktop and 390 px mobile widths. The evidence ledger now uses a larger, right-weighted card with aligned label/value rows, readable technical metadata, and a coherent proof-chain footer. The hero headline now has two intentional desktop lines and reflows naturally on mobile without oversized empty zones or awkward word breaks.
+
+After the requested scale adjustment, the desktop evidence card was reduced to a compact, balanced footprint while retaining the aligned record fields, readable values, and proof-chain treatment.
+
+The reduced card was also verified at 390 px mobile width. It remains within the viewport, its title and seal retain clear separation, and the visible proof metadata stays aligned and legible without horizontal overflow.
