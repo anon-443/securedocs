@@ -26,3 +26,8 @@
 - [x] Configure deployment guidance for React, FastAPI, PostgreSQL, object storage, environment variables, and CORS/cookie settings.
 - [ ] Run and document end-to-end staging verification for registration, email delivery, role actions, upload, review, preview, public verification, and alerts once PostgreSQL and SMTP are configured.
 - [ ] Create the final project checkpoint and submit-ready GitHub repository workflow.
+- [x] Redesign SecureDocs with a dark navy-and-teal visual system inspired by the provided operational-product references.
+- [x] Build a properly sized public landing page with concise formatted copy and clear access paths.
+- [x] Apply the dark theme consistently to dashboard, sign-in, and public verification views while preserving accessibility.
+- [x] Remove terminal full stops from concise interface labels and messages where appropriate, using the documented copy-style pass.
+- [x] Validate the redesigned landing and product views across desktop and mobile breakpoints.

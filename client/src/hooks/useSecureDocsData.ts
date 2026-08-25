@@ -5,6 +5,7 @@ import {
   type SecureDocsDocument,
   type SecureDocsActivity,
   type SecureDocsAlert,
+  type SecureDocsCategory,
   type SecureDocsOverview,
   type SecureDocsUser,
 } from "@/lib/securedocsApi";
@@ -15,6 +16,7 @@ type SecureDocsDataState = {
   documents: SecureDocsDocument[];
   activity: SecureDocsActivity[];
   alerts: SecureDocsAlert[];
+  categories: SecureDocsCategory[];
   loading: boolean;
   connected: boolean;
 };
@@ -25,6 +27,7 @@ const emptyState: SecureDocsDataState = {
   documents: [],
   activity: [],
   alerts: [],
+  categories: [],
   loading: true,
   connected: false,
 };
@@ -37,13 +40,14 @@ export function useSecureDocsData() {
     async function load() {
       try {
         const user = await secureDocsApi.currentUser();
-        const [overview, documents, activity, alerts] = await Promise.all([
+        const [overview, documents, activity, alerts, categories] = await Promise.all([
           secureDocsApi.overview(),
           secureDocsApi.documents(),
           secureDocsApi.activity().catch(() => []),
           secureDocsApi.alerts().catch(() => []),
+          secureDocsApi.categories().catch(() => []),
         ]);
-        if (active) setState({ user, overview, documents, activity, alerts, loading: false, connected: true });
+        if (active) setState({ user, overview, documents, activity, alerts, categories, loading: false, connected: true });
       } catch (error) {
         if (!active) return;
         const isUnauthenticated = error instanceof SecureDocsApiError && error.status === 401;

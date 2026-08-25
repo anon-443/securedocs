@@ -24,6 +24,7 @@ export type SecureDocsDocument = {
   original_filename: string;
   owner_user_id: string;
   content_type: string;
+  category_id?: string | null;
   status: "draft" | "pending_review" | "approved" | "rejected" | "archived" | "deleted";
   updated_at: string;
 };
@@ -45,6 +46,12 @@ export type SecureDocsAlert = {
   description: string;
   is_resolved: boolean;
   created_at: string;
+};
+
+export type SecureDocsCategory = {
+  id: string;
+  name: string;
+  description: string | null;
 };
 
 const defaultApiBase = "http://localhost:8000/api/v1";
@@ -93,10 +100,30 @@ export async function uploadSecureDocument(input: {
   });
 }
 
+async function csrfMutation<T>(path: string, method: "PATCH" | "POST" | "DELETE", body?: unknown): Promise<T> {
+  const csrf = csrfToken();
+  return apiRequest<T>(path, {
+    method,
+    headers: { "Content-Type": "application/json", ...(csrf ? { "X-CSRF-Token": csrf } : {}) },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+}
+
+export const documentActions = {
+  update: (id: string, changes: { title?: string; description?: string; category_id?: string | null }) =>
+    csrfMutation<SecureDocsDocument>(`/documents/${id}`, "PATCH", changes),
+  remove: (id: string) => csrfMutation<void>(`/documents/${id}`, "DELETE"),
+  review: (id: string, decision: "approved" | "rejected", note?: string) =>
+    csrfMutation<SecureDocsDocument>(`/documents/${id}/review`, "POST", { decision, note }),
+  previewUrl: (id: string) => `${secureDocsApiBase}/documents/${id}/preview`,
+  downloadUrl: (id: string) => `${secureDocsApiBase}/documents/${id}/download`,
+};
+
 export const secureDocsApi = {
   currentUser: () => apiRequest<SecureDocsUser>("/auth/me"),
   overview: () => apiRequest<SecureDocsOverview>("/dashboard/overview"),
   documents: () => apiRequest<SecureDocsDocument[]>("/documents"),
   activity: () => apiRequest<SecureDocsActivity[]>("/dashboard/activity"),
   alerts: () => apiRequest<SecureDocsAlert[]>("/dashboard/security-alerts"),
+  categories: () => apiRequest<SecureDocsCategory[]>("/documents/categories"),
 };

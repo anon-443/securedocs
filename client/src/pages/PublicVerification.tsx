@@ -25,10 +25,10 @@ export default function PublicVerification() {
       try {
         const response = await fetch(`${secureDocsApiBase}/verify/${encodeURIComponent(reference)}`);
         const body = await response.json();
-        if (!response.ok) throw new Error(body?.detail || "Verification record was not found.");
+        if (!response.ok) throw new Error(body?.detail || "Verification record was not found");
         if (active) setResult(body);
       } catch (requestError) {
-        if (active) setError(requestError instanceof Error ? requestError.message : "Unable to verify this document.");
+        if (active) setError(requestError instanceof Error ? requestError.message : "Unable to verify this document");
       }
     }
     if (reference) void verify();
@@ -57,7 +57,8 @@ export default function PublicVerification() {
             <div className="public-detail-row"><span>Reference code</span><strong className="public-code">{result?.reference_code || reference}</strong></div>
             {isValid && <><div className="public-detail-row"><span>Document title</span><strong>{result?.title}</strong></div><div className="public-detail-row"><span>Approval status</span><strong className="public-approved">{result?.status}</strong></div><div className="public-detail-row"><span>Approved date</span><strong>{result?.approved_at ? new Date(result.approved_at).toLocaleDateString() : "—"}</strong></div></>}
           </div>
-          <p className="public-privacy">No private document data is exposed here. The public verifier returns only the minimum evidence needed to validate an approved reference.</p>
+          <p className="public-privacy">No private document data is exposed here
+          The public verifier returns only the minimum evidence needed to validate an approved reference</p>
           {isValid && <button onClick={() => window.print()} className="public-print-button"><Printer size={16} /> Print verification result</button>}
         </>}
       </section>

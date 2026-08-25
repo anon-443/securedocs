@@ -9,4 +9,6 @@ The public verifier was refined to share the same SecureDocs navy-and-teal mater
 
 At a 375 px mobile viewport, the navigation rail collapses cleanly, the role selector remains reachable, the upload action becomes full width, and summary metrics reflow into a single readable column without horizontal overflow.
 
+The redesigned landing page was checked at desktop and 375 px mobile widths. It maintains a strong first-screen hierarchy, keeps primary access actions visible, and uses navy, teal, mint, audit-code, and verification motifs consistently. The mobile sign-in surface now inherits the dark system across the entire viewport without the former white outer margin.
+
 The review confirmed that no user reviews, ratings, or testimonials are displayed anywhere in the interface.
