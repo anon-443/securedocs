@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import AliasChoices, Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -15,7 +15,10 @@ class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
     log_level: str = "INFO"
 
-    database_url: str = "postgresql+psycopg://securedocs:change-me@localhost:5432/securedocs"
+    database_url: str = Field(
+        default="postgresql+psycopg://securedocs:change-me@localhost:5432/securedocs",
+        validation_alias=AliasChoices("SECUREDOCS_DATABASE_URL", "DATABASE_URL"),
+    )
 
     jwt_secret_key: SecretStr = SecretStr("development-only-jwt-secret-must-be-replaced-in-production-2026")
     jwt_algorithm: str = "HS256"
@@ -67,6 +70,11 @@ class Settings(BaseSettings):
         if isinstance(value, str):
             return [item.strip() for item in value.split(",") if item.strip()]
         return value
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def normalize_database_url(cls, value: str) -> str:
+        return value.replace("\\u0026", "&").replace("&amp;", "&")
 
     @field_validator("app_env", mode="before")
     @classmethod

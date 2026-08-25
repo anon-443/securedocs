@@ -7,16 +7,17 @@ Create Date: 2026-08-25
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
 
 revision = "20260825_0001"
 down_revision = None
 branch_labels = None
 depends_on = None
 
-user_role = sa.Enum("admin", "manager", "employee", name="user_role")
-document_status = sa.Enum("draft", "pending_review", "approved", "rejected", "archived", "deleted", name="document_status")
-review_decision = sa.Enum("approved", "rejected", name="review_decision")
-alert_severity = sa.Enum("low", "medium", "high", "critical", name="alert_severity")
+user_role = postgresql.ENUM("admin", "manager", "employee", name="user_role", create_type=False)
+document_status = postgresql.ENUM("draft", "pending_review", "approved", "rejected", "archived", "deleted", name="document_status", create_type=False)
+review_decision = postgresql.ENUM("approved", "rejected", name="review_decision", create_type=False)
+alert_severity = postgresql.ENUM("low", "medium", "high", "critical", name="alert_severity", create_type=False)
 
 
 def upgrade() -> None:

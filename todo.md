@@ -26,7 +26,7 @@
 - [x] Add a threat-model document and a secure-development testing-report template alongside the OWASP Top 10 checklist.
 - [x] Add a demo script to the architecture, ERD, API, deployment, README, and submission documentation set.
 - [x] Configure deployment guidance for React, FastAPI, PostgreSQL, object storage, environment variables, and CORS/cookie settings.
-- [ ] Run and document end-to-end staging verification for registration, email delivery, role actions, upload, review, preview, public verification, and alerts once PostgreSQL and SMTP are configured.
+- [ ] Complete and document the remaining end-to-end staging verification for email delivery, role actions, upload storage, review, preview, public verification, and alerts once SMTP and production object-storage settings are configured.
 - [ ] Create the final project checkpoint and submit-ready GitHub repository workflow.
 - [x] Redesign SecureDocs with a dark navy-and-teal visual system inspired by the provided operational-product references.
 - [x] Build a properly sized public landing page with concise formatted copy and clear access paths.
@@ -38,7 +38,7 @@
 - [x] Remove excessive whitespace, correct section sizing, and preserve readable text line lengths across desktop and mobile breakpoints.
 - [x] Complete the final active-route copy pass to remove formatting defects and ensure natural short-message flow without unnecessary terminal punctuation.
 - [x] Add refined animation, interaction feedback, and coherent page-to-page visual continuity without compromising accessibility.
-- [ ] Implement dedicated review queue, profile, administration, verification, audit, and security views with real role-aware actions.
+- [x] Implement dedicated review queue, profile, administration, verification, audit, and security views with real role-aware actions.
 - [x] Create and verify a feature-status audit mapping internship requirements to implemented evidence, staging blockers, and remaining gaps.
 - [ ] Complete the remaining feasible product and visual implementation items identified in the feature-status audit before final delivery.
 - [x] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.

@@ -4,7 +4,7 @@ SecureDocs reads configuration from deployment environment variables. Do not com
 
 | Variable | Required | Purpose |
 |---|---:|---|
-| `DATABASE_URL` | Yes | PostgreSQL SQLAlchemy URL, for example `postgresql+psycopg://user:password@host:5432/securedocs`. |
+| `SECUREDOCS_DATABASE_URL` | Yes | Private Neon PostgreSQL URL. The FastAPI service prioritizes this value before a generic workspace database variable. |
 | `JWT_SECRET_KEY` | Yes | Unique high-entropy signing key for JWT access and refresh tokens. |
 | `CSRF_SECRET_KEY` | Yes | Separate high-entropy key reserved for CSRF-related controls. |
 | `FRONTEND_ORIGINS` | Yes | Comma-separated allowlist of trusted dashboard origins. |

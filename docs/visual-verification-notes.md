@@ -15,4 +15,6 @@ The rebuilt landing page was reviewed at desktop width. The replacement resolves
 
 The rebuilt landing, workspace, sign-in, and public verification screens were also checked at 375 px. The landing hierarchy and two actions remain visible without horizontal overflow, the workspace summary reflows to one column with a full-width primary action, and dark surfaces remain continuous across the sign-in flow. The public verification fallback remains visually clear while the FastAPI service is unavailable locally; its error copy was adjusted for readable separation without terminal punctuation.
 
+The dedicated Review Queue, Verification, Audit, and Security panels were opened through direct workspace panel links and reviewed at desktop width. Each panel shows its distinct custody-focused hierarchy, role-appropriate metrics, and a truthful empty or preview state when the FastAPI service has not been started locally. The Review Queue additionally displays its pending-format filter and review actions.
+
 The review confirmed that no user reviews, ratings, or testimonials are displayed anywhere in the interface.

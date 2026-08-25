@@ -10,8 +10,10 @@ import app.models  # noqa: F401 - registers all model metadata for Alembic
 config = context.config
 settings = get_settings()
 database_url = settings.database_url
-if not database_url.startswith("postgresql+"):
-    database_url = "postgresql+psycopg://securedocs:change-me@localhost:5432/securedocs"
+if database_url.startswith("postgresql://"):
+    database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+elif not database_url.startswith("postgresql+psycopg://"):
+    raise RuntimeError("SecureDocs migrations require a PostgreSQL connection string.")
 config.set_main_option("sqlalchemy.url", database_url)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
