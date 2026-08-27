@@ -82,7 +82,12 @@ class Settings(BaseSettings):
     @field_validator("database_url", mode="before")
     @classmethod
     def normalize_database_url(cls, value: str) -> str:
-        return value.replace("\\u0026", "&").replace("&amp;", "&")
+        normalized = value.replace("\\u0026", "&").replace("&amp;", "&")
+        if normalized.startswith("postgresql://"):
+            return normalized.replace("postgresql://", "postgresql+psycopg://", 1)
+        if normalized.startswith("postgres://"):
+            return normalized.replace("postgres://", "postgresql+psycopg://", 1)
+        return normalized
 
     @field_validator("app_env", mode="before")
     @classmethod

@@ -54,7 +54,7 @@ export type SecureDocsCategory = {
   description: string | null;
 };
 
-const defaultApiBase = "http://localhost:8000/api/v1";
+const defaultApiBase = "/api/v1";
 export const secureDocsApiBase = (import.meta.env.VITE_SECUREDOCS_API_URL || defaultApiBase).replace(/\/$/, "");
 
 export class SecureDocsApiError extends Error {

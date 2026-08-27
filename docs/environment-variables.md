@@ -16,5 +16,6 @@ SecureDocs reads configuration from deployment environment variables. Do not com
 | `MAIL_FROM` and SMTP settings | For email | Sender and transport configuration for verification and recovery messages. |
 | `EMAIL_VERIFICATION_FRONTEND_URL` and `PASSWORD_RESET_FRONTEND_URL` | Yes | Exact HTTPS frontend routes that receive one-time verification and recovery links. |
 | `PUBLIC_VERIFICATION_BASE_URL` | Yes | Public UI base URL used to render QR verification links. |
+| `VITE_SECUREDOCS_API_URL` | No | Optional API override for a separately hosted FastAPI service. Leave unset to use the same-origin `/api/v1` proxy. |
 
 Use separate values for local, staging, and production. Rotate any credential that is exposed or suspected to be exposed, and never place database URLs, JWT keys, storage credentials, or SMTP passwords in issue comments, commits, screenshots, or the frontend bundle.

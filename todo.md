@@ -53,4 +53,13 @@
 - [x] Preserve safe inline-preview and forced-download behavior when using managed project storage.
 - [x] Add automated managed-storage tests for preview responses and download-specific content-disposition controls.
 - [x] Document the managed storage backend in the deployment configuration guide.
+- [x] Run FastAPI beside the React/Node server in the production container and proxy the versioned API through the deployed SecureDocs domain.
+- [x] Add production container health checks that confirm both the public host and FastAPI service are ready.
+- [x] Validate the production runtime build and startup contract without exposing credentials.
+- [x] Reject an occupied FastAPI internal port before the combined runtime reports itself ready.
+- [x] Normalize the configured Neon PostgreSQL URL for the FastAPI runtime so it does not fall back to a local database.
+- [x] Make the browser API client use the same-origin FastAPI proxy by default in the combined production runtime.
+- [ ] Deploy the root container and verify the real SecureDocs domain serves both the React app and proxied FastAPI endpoints.
+- [x] Add a production-mode browser API test proving auth and document clients resolve to the same-origin proxy.
+- [x] Verify a browser request to a protected document API route resolves through the same-origin FastAPI proxy.
 - [x] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.
