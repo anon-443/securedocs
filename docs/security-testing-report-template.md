@@ -40,7 +40,11 @@ Describe the tested API base URL, UI URL, roles used, seed data policy, tools (b
 
 Verified-login, live document upload, review actions, and public verification should be added to this record after the FastAPI service is deployed.
 
-> Deployment note, 2026-08-27: Autoscale is already the correct active hosting mode. Local combined-runtime checks passed, but the live `/health` route still returns the prior frontend 404 page and does not yet reach FastAPI. The remaining issue is publication of the saved container runtime, not a user hosting-mode selection.
+> Deployment note, 2026-08-27: Autoscale is the correct active hosting mode. The latest combined-runtime checkpoint is now live: the published SecureDocs domain serves the React landing experience and `/health` returns FastAPI's successful JSON response.
+
+> Live API note, 2026-08-27: The public same-origin proxy was verified on the deployed domain. `/api/v1/openapi.json` returned the FastAPI OpenAPI specification and the protected `/api/v1/auth/me` route returned the expected `401 Authentication is required` response before login.
+
+> Email-link note, 2026-08-27: The production cookie, trusted-origin, and public-link configuration is set for the published SecureDocs domain. Dedicated email-verification and password-recovery pages were built and visually reviewed before live registration testing.
 
 > Preview note, 2026-08-27: The FastAPI sidecar now stays disabled during ordinary managed preview sessions and starts automatically in production. This prevents the internal API port from replacing the browser-facing preview. An explicit `START_FASTAPI_SIDECAR=true` opt-in remains available for local integration testing.
 

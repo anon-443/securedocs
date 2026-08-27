@@ -59,7 +59,13 @@
 - [x] Reject an occupied FastAPI internal port before the combined runtime reports itself ready.
 - [x] Normalize the configured Neon PostgreSQL URL for the FastAPI runtime so it does not fall back to a local database.
 - [x] Make the browser API client use the same-origin FastAPI proxy by default in the combined production runtime.
-- [ ] Deploy the root container and verify the real SecureDocs domain serves both the React app and proxied FastAPI endpoints.
+- [x] Deploy the root container and verify the real SecureDocs domain serves both the React app and proxied FastAPI endpoints.
+- [x] Verify the live SecureDocs domain serves the proxied FastAPI OpenAPI or documentation route.
+- [x] Verify a live same-origin `/api/v1` authentication or document route and record the result.
+- [x] Configure production-safe cookie and public-link settings for the live SecureDocs domain.
+- [x] Add public email-verification and password-reset pages that consume SecureDocs one-time links safely.
+- [ ] Verify live account registration, Mailtrap verification delivery, and verified-email login.
+- [ ] Verify a live employee upload, Manager review, protected preview/download, public QR verification, audit history, and Admin security alert workflow.
 - [x] Confirm Autoscale is already the correct active hosting mode; no user hosting-mode change is required for the container runtime.
 - [x] Add a production-mode browser API test proving auth and document clients resolve to the same-origin proxy.
 - [x] Verify a browser request to a protected document API route resolves through the same-origin FastAPI proxy.

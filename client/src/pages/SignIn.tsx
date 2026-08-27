@@ -59,6 +59,7 @@ export default function SignIn() {
             {error && <p role="alert" className="rounded-xl bg-[#fceceb] px-3 py-2 text-xs font-semibold text-[#a74747]">{error}</p>}
             {message && <p className="rounded-xl bg-[#e9f8f2] px-3 py-2 text-xs font-semibold text-[#277862]">{message}</p>}
             <button disabled={submitting} className="mt-2 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#d8f7ed] text-sm font-extrabold text-[#123d4b] shadow-lg shadow-[#0a1f2c]/25 disabled:opacity-60"><LockKeyhole size={16} />{submitting ? "Securing request" : mode === "sign-in" ? "Sign in securely" : "Create secure account"}</button>
+            {mode === "sign-in" && <Link href="/reset-password" className="justify-self-start text-xs font-bold text-[#8cddcb] transition hover:text-[#d8f7ed]">Forgot password</Link>}
           </form>
         </div>
       </section>

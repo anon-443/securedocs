@@ -5,6 +5,8 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import EmailVerification from "./pages/EmailVerification";
+import PasswordReset from "./pages/PasswordReset";
 import PublicVerification from "./pages/PublicVerification";
 import SignIn from "./pages/SignIn";
 import SecureDocsDashboard from "./components/SecureDocsDashboard";
@@ -16,6 +18,8 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/workspace"} component={SecureDocsDashboard} />
       <Route path={"/sign-in"} component={SignIn} />
+      <Route path={"/verify-email"} component={EmailVerification} />
+      <Route path={"/reset-password"} component={PasswordReset} />
       <Route path={"/verify/:reference"} component={PublicVerification} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
