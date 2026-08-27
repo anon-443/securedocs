@@ -19,4 +19,10 @@ This document tracks the internship requirements against the codebase. A feature
 
 ## Current build focus
 
-The user-facing experience is built around a forensic evidence-custody visual system rather than a generic dashboard. The workspace navigation is fixed on desktop, has stronger text and icon hierarchy, and labels the top role buttons as a **View as** visual preview. The remaining work is the final live acceptance record, not visual or environment setup.
+The user-facing experience is built around a forensic evidence-custody visual system rather than a generic dashboard. The published workspace navigation is fixed on desktop, has stronger text and icon hierarchy, and labels the top role buttons as a **View as** visual preview. Desktop and mobile review have been recorded; the remaining work is the final live acceptance record, not visual or environment setup.
+
+**Deployment verification update — 2026-08-27:** The workspace refinement has been verified on the published domain at both desktop and real `390 × 844` mobile viewports. The only outstanding acceptance work concerns authenticated email, document, role-review, public-verification, audit, and security-alert flows.
+
+**Direct live-mobile inspection — 2026-08-27:** The published `390 × 844` workspace shows the intentionally sidebar-free mobile layout, compact role-preview control, readable heading, prominent upload action, preview-mode status strip, and first metric card. No horizontal overflow was visible in the inspected viewport.
+
+**Measured live-mobile verification — 2026-08-27:** Browser DOM checks on the published `390 × 844` workspace confirm `390 px` document width for a `390 px` viewport, no horizontal overflow, three reachable role-preview buttons, a `50 px` primary upload control, and the intended hidden desktop navigation rail. The deployed workspace visual refinement is therefore complete.
