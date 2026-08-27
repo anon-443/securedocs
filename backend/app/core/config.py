@@ -37,12 +37,20 @@ class Settings(BaseSettings):
     rate_limit_login_per_minute: int = Field(default=5, ge=1, le=30)
     rate_limit_public_verify_per_minute: int = Field(default=30, ge=1, le=120)
 
-    storage_backend: Literal["local", "s3"] = "local"
+    storage_backend: Literal["local", "s3", "managed"] = "local"
     storage_bucket: str = "securedocs-documents"
     storage_region: str = "us-east-1"
     s3_endpoint_url: str | None = None
     s3_access_key_id: SecretStr | None = None
     s3_secret_access_key: SecretStr | None = None
+    managed_storage_api_url: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("BUILT_IN_FORGE_API_URL", "MANAGED_STORAGE_API_URL"),
+    )
+    managed_storage_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("BUILT_IN_FORGE_API_KEY", "MANAGED_STORAGE_API_KEY"),
+    )
     max_upload_bytes: int = Field(default=10_485_760, ge=1_048_576, le=52_428_800)
     allowed_content_types: list[str] = Field(
         default_factory=lambda: [

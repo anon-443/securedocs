@@ -33,8 +33,10 @@ Describe the tested API base URL, UI URL, roles used, seed data policy, tools (b
 | 2026-08-25 | Neon PostgreSQL staging | Secure database setting recognized by backend configuration | Passed | Backend configuration test selected the non-local PostgreSQL URL |
 | 2026-08-25 | Neon PostgreSQL staging | Alembic schema migration | Passed | Revision `20260825_0001` applied as migration head |
 | 2026-08-25 | Backend test environment | FastAPI test suite | Passed with one upstream deprecation warning | `17 passed` |
+| 2026-08-27 | Mailtrap Email Sandbox | SecureDocs verification-email smoke test | Passed | Received in Mailtrap sandbox inbox with expected verification subject |
+| 2026-08-27 | Backend test environment | Managed document-storage adapter and configuration | Passed | Upload, download disposition, and inline preview behavior covered; `21 passed`, `ruff check` passed |
 
-Email delivery, verified-login, real upload storage, review actions, and public verification should be added to this record after SMTP and production object-storage configuration are supplied.
+Verified-login, live document upload, review actions, and public verification should be added to this record after the FastAPI service is deployed.
 
 ## Sign-off
 

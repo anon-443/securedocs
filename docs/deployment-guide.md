@@ -1,10 +1,10 @@
 # Deployment Guide
 
-SecureDocs is designed for a split deployment: host the React client as a static application, host `backend/` as a FastAPI container, use managed PostgreSQL, and use private S3-compatible object storage. This avoids exposing document files through the frontend host.
+SecureDocs is designed for a split deployment: host the React client as a static application, host `backend/` as a FastAPI container, use managed PostgreSQL, and store document bytes in private managed project storage or private S3-compatible object storage. This avoids exposing document files through the frontend host.
 
 ## Backend deployment
 
-Build `backend/Dockerfile`, set the production `DATABASE_URL` to a PostgreSQL `postgresql+psycopg://` URL, and provide unique `JWT_SECRET_KEY` and `CSRF_SECRET_KEY` values from the host's secret manager. Set `APP_ENV=production`, `COOKIE_SECURE=true`, an HTTPS `PUBLIC_VERIFICATION_BASE_URL`, the exact deployed `FRONTEND_ORIGINS`, and S3 credentials with least privilege. Run `alembic upgrade head` as a release step before serving traffic.
+Build `backend/Dockerfile`, set the production `DATABASE_URL` to a PostgreSQL `postgresql+psycopg://` URL, and provide unique `JWT_SECRET_KEY` and `CSRF_SECRET_KEY` values from the host's secret manager. Set `APP_ENV=production`, `COOKIE_SECURE=true`, an HTTPS `PUBLIC_VERIFICATION_BASE_URL`, and the exact deployed `FRONTEND_ORIGINS`. Use `STORAGE_BACKEND=managed` to use the project-managed private object store without extra credentials, or use `STORAGE_BACKEND=s3` with least-privilege S3 credentials. Run `alembic upgrade head` as a release step before serving traffic.
 
 ## Frontend deployment
 

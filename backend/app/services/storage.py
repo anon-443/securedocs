@@ -5,6 +5,7 @@ from pathlib import Path
 from uuid import uuid4
 
 import boto3
+import httpx
 from fastapi import HTTPException, status
 from fastapi.responses import FileResponse, RedirectResponse, Response
 
@@ -16,6 +17,7 @@ LOCAL_STORAGE_ROOT = Path("storage/local").resolve()
 
 def safe_original_filename(value: str) -> str:
     """Keep a display filename while removing path components and control characters."""
+
     cleaned = Path(value).name.replace("\x00", "").strip()
     if not cleaned or len(cleaned) > 255:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file name.")
@@ -84,6 +86,61 @@ def _s3_client():
     )
 
 
+def _managed_storage_config() -> tuple[str, str]:
+    """Return non-empty settings required by the platform-managed object store."""
+
+    if not settings.managed_storage_api_url or not settings.managed_storage_api_key:
+        raise RuntimeError("Managed storage requires the preconfigured project storage credentials.")
+    return (
+        settings.managed_storage_api_url.rstrip("/"),
+        settings.managed_storage_api_key.get_secret_value(),
+    )
+
+
+def _managed_presigned_url(*, operation: str, storage_key: str) -> str:
+    api_url, api_key = _managed_storage_config()
+    try:
+        response = httpx.get(
+            f"{api_url}/v1/storage/presign/{operation}",
+            params={"path": storage_key},
+            headers={"Authorization": f"Bearer {api_key}"},
+            timeout=10.0,
+        )
+        response.raise_for_status()
+        url = response.json().get("url")
+    except (httpx.HTTPError, ValueError) as exc:
+        raise RuntimeError("Managed storage presign request failed.") from exc
+    if not isinstance(url, str) or not url:
+        raise RuntimeError("Managed storage returned no signed URL.")
+    return url
+
+
+def _store_managed_document(*, storage_key: str, content: bytes, content_type: str) -> None:
+    upload_url = _managed_presigned_url(operation="put", storage_key=storage_key)
+    try:
+        response = httpx.put(
+            upload_url,
+            content=content,
+            headers={"Content-Type": content_type},
+            timeout=30.0,
+        )
+        response.raise_for_status()
+    except httpx.HTTPError as exc:
+        raise RuntimeError("Managed storage upload failed.") from exc
+
+
+def _managed_document_bytes(*, storage_key: str) -> bytes:
+    """Fetch a short-lived object URL server-side to retain response disposition controls."""
+
+    download_url = _managed_presigned_url(operation="get", storage_key=storage_key)
+    try:
+        response = httpx.get(download_url, timeout=30.0)
+        response.raise_for_status()
+    except httpx.HTTPError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document content is unavailable.") from exc
+    return response.content
+
+
 def store_document(*, storage_key: str, content: bytes, content_type: str) -> None:
     if settings.storage_backend == "s3":
         _s3_client().put_object(
@@ -93,6 +150,9 @@ def store_document(*, storage_key: str, content: bytes, content_type: str) -> No
             ContentType=content_type,
             ServerSideEncryption="AES256",
         )
+        return
+    if settings.storage_backend == "managed":
+        _store_managed_document(storage_key=storage_key, content=content, content_type=content_type)
         return
     path = _local_path(storage_key)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -115,6 +175,15 @@ def secure_download(*, storage_key: str, original_filename: str, content_type: s
             ExpiresIn=300,
         )
         return RedirectResponse(url=url, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    if settings.storage_backend == "managed":
+        return Response(
+            content=_managed_document_bytes(storage_key=storage_key),
+            media_type=content_type,
+            headers={
+                "Content-Disposition": f'attachment; filename="{filename}"',
+                "Cache-Control": "private, no-store",
+            },
+        )
     path = _local_path(storage_key)
     if not path.is_file():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document content is unavailable.")
@@ -142,6 +211,15 @@ def secure_preview(*, storage_key: str, original_filename: str, content_type: st
             ExpiresIn=120,
         )
         return RedirectResponse(url=url, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    if settings.storage_backend == "managed":
+        return Response(
+            content=_managed_document_bytes(storage_key=storage_key),
+            media_type=content_type,
+            headers={
+                "Content-Disposition": f'inline; filename="{filename}"',
+                "Cache-Control": "private, no-store",
+            },
+        )
     path = _local_path(storage_key)
     if not path.is_file():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document content is unavailable.")

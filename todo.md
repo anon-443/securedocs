@@ -46,4 +46,11 @@
 - [x] Verify the refined landing hero at desktop and mobile widths before saving the visual update.
 - [x] Reduce the evidence-card footprint while preserving aligned proof metadata and responsive readability.
 - [x] Re-verify the reduced evidence card at mobile width and record proof-metadata readability after the compact-size change.
+- [x] Configure Mailtrap SMTP secrets for SecureDocs verification and password-reset delivery.
+- [x] Validate Mailtrap-backed email delivery in the SecureDocs staging workflow.
+- [x] Send a non-sensitive Mailtrap verification-email smoke test and confirm its inbox receipt.
+- [x] Connect FastAPI uploads, previews, and downloads to the managed project storage service without requiring additional user credentials.
+- [x] Preserve safe inline-preview and forced-download behavior when using managed project storage.
+- [x] Add automated managed-storage tests for preview responses and download-specific content-disposition controls.
+- [x] Document the managed storage backend in the deployment configuration guide.
 - [x] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.

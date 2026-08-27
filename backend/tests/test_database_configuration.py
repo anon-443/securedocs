@@ -15,3 +15,12 @@ def test_database_url_normalizes_escaped_query_separators(monkeypatch) -> None:
     get_settings.cache_clear()
 
     assert get_settings().database_url.endswith("sslmode=require&channel_binding=require")
+
+
+def test_managed_project_storage_configuration_is_available() -> None:
+    get_settings.cache_clear()
+    settings = get_settings()
+
+    assert settings.storage_backend == "managed"
+    assert settings.managed_storage_api_url
+    assert settings.managed_storage_api_key is not None

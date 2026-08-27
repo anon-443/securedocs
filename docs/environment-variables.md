@@ -10,7 +10,7 @@ SecureDocs reads configuration from deployment environment variables. Do not com
 | `FRONTEND_ORIGINS` | Yes | Comma-separated allowlist of trusted dashboard origins. |
 | `COOKIE_SECURE` | Yes | `true` in HTTPS deployments and `false` only for local HTTP development. |
 | `COOKIE_SAMESITE` | Yes | Usually `lax`; use `none` only with HTTPS and a documented cross-site need. |
-| `STORAGE_BACKEND` | Yes | `s3` for production object storage or `local` only during development. |
+| `STORAGE_BACKEND` | Yes | `managed` for the preconfigured private project object store, `s3` for a customer-managed S3-compatible store, or `local` only during development. |
 | `STORAGE_BUCKET` | Yes | Private document bucket name. |
 | `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` | For S3 | Credentials with least privilege to the document bucket. |
 | `MAIL_FROM` and SMTP settings | For email | Sender and transport configuration for verification and recovery messages. |
