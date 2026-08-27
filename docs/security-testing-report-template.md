@@ -52,6 +52,12 @@ Verified-login, live document upload, review actions, and public verification sh
 
 > Configuration repair, 2026-08-27: The first production configuration rollout exposed a FastAPI startup failure when the platform supplied comma-separated allowed origins. The setting now disables automatic JSON decoding and safely parses approved comma-separated values. The regression test and lint check passed; a fresh production rollout is required before generating the corrected live email link.
 
+> Rollout verification, 2026-08-27: The repaired production container started successfully. On the live SecureDocs domain, `/health` returned the FastAPI success response and `/api/v1/auth/me` returned the expected unauthenticated `401` response through the public same-origin proxy.
+
+> Fresh-link verification, 2026-08-27: A second valid non-personal QA registration was accepted by the repaired live API with `201 Created`. The Mailtrap sandbox inbox was opened to inspect the new message; its initial browser render was blank, so inbox loading is being rechecked before the corrected URL is confirmed.
+
+> Delivery recheck, 2026-08-27: The refreshed Mailtrap sandbox inbox lists the newly generated SecureDocs verification message for the fresh QA account. The message body is being opened to inspect its destination URL.
+
 > Preview note, 2026-08-27: The FastAPI sidecar now stays disabled during ordinary managed preview sessions and starts automatically in production. This prevents the internal API port from replacing the browser-facing preview. An explicit `START_FASTAPI_SIDECAR=true` opt-in remains available for local integration testing.
 
 ## Sign-off

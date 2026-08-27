@@ -64,9 +64,10 @@
 - [x] Verify a live same-origin `/api/v1` authentication or document route and record the result.
 - [x] Configure production-safe cookie and public-link settings for the live SecureDocs domain.
 - [x] Fix production parsing of allowed browser origins so the FastAPI container can start with the live SecureDocs configuration.
-- [ ] Redeploy after the origin-parser repair and verify FastAPI starts successfully with the live production configuration.
-- [ ] Confirm the live `/health` and one protected `/api/v1` route work after the parser-repair rollout.
+- [x] Redeploy after the origin-parser repair and verify FastAPI starts successfully with the live production configuration.
+- [x] Confirm the live `/health` and one protected `/api/v1` route work after the parser-repair rollout.
 - [ ] Confirm a newly generated verification email uses the live SecureDocs verification URL rather than localhost.
+- [ ] Expose non-sensitive live configuration status to diagnose verification-link destination without revealing credentials.
 - [x] Add public email-verification and password-reset pages that consume SecureDocs one-time links safely.
 - [ ] Verify live account registration, Mailtrap verification delivery, and verified-email login.
 - [ ] Verify a live employee upload, Manager review, protected preview/download, public QR verification, audit history, and Admin security alert workflow.
