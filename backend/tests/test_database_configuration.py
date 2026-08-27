@@ -26,3 +26,15 @@ def test_managed_project_storage_configuration_is_available() -> None:
     assert settings.storage_backend == "managed"
     assert settings.managed_storage_api_url
     assert settings.managed_storage_api_key is not None
+
+
+def test_comma_separated_live_origin_is_parsed_without_json(monkeypatch) -> None:
+    monkeypatch.setenv("FRONTEND_ORIGINS", "https://securedocs-nl6ubzst.manus.space")
+    monkeypatch.setenv("TRUSTED_HOSTS", "securedocs-nl6ubzst.manus.space,localhost,127.0.0.1")
+    get_settings.cache_clear()
+
+    settings = get_settings()
+
+    assert settings.frontend_origins == ["https://securedocs-nl6ubzst.manus.space"]
+    assert settings.trusted_hosts == ["securedocs-nl6ubzst.manus.space", "localhost", "127.0.0.1"]
+    get_settings.cache_clear()

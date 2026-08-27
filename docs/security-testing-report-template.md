@@ -46,6 +46,12 @@ Verified-login, live document upload, review actions, and public verification sh
 
 > Email-link note, 2026-08-27: The production cookie, trusted-origin, and public-link configuration is set for the published SecureDocs domain. Dedicated email-verification and password-recovery pages were built and visually reviewed before live registration testing.
 
+> Input-validation note, 2026-08-27: The live registration endpoint correctly rejected a reserved special-use email domain with `422 Request validation failed`, without creating an account or sending email.
+
+> Live registration note, 2026-08-27: A valid non-personal QA account was registered through the published same-origin API with `201 Created`, and SecureDocs returned its verification-email confirmation. Mailtrap inbox confirmation is pending because the current browser session is signed out of Mailtrap.
+
+> Configuration repair, 2026-08-27: The first production configuration rollout exposed a FastAPI startup failure when the platform supplied comma-separated allowed origins. The setting now disables automatic JSON decoding and safely parses approved comma-separated values. The regression test and lint check passed; a fresh production rollout is required before generating the corrected live email link.
+
 > Preview note, 2026-08-27: The FastAPI sidecar now stays disabled during ordinary managed preview sessions and starts automatically in production. This prevents the internal API port from replacing the browser-facing preview. An explicit `START_FASTAPI_SIDECAR=true` opt-in remains available for local integration testing.
 
 ## Sign-off
