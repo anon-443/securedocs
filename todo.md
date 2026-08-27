@@ -94,3 +94,8 @@
 - [x] Update the feature-status audit after the confirmed live desktop and mobile workspace checks.
 - [x] Correct the mobile verification documentation so it contains only the measured published-browser evidence.
 - [x] Measure the rendered published mobile workspace in a real browser for role controls, upload prominence, hidden desktop rail, and horizontal-overflow status.
+- [x] Increase desktop top-bar breadcrumb, role-control, and notification-control prominence without reducing responsive clarity.
+- [x] Remove the oversized vertical gap below the workspace top bar so the content begins at a more deliberate position.
+- [ ] Verify the refined top bar at desktop and mobile sizes and publish the corrected layout.
+- [ ] Publish the refined top bar and verify its larger controls and reduced top spacing on the live SecureDocs workspace.
+- [ ] Record live desktop and mobile evidence for the published top-bar refinement.
