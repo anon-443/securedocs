@@ -9,6 +9,18 @@ export const FASTAPI_PROXY_PREFIXES = ["/api/v1", "/docs", "/redoc", "/health"] 
 const FASTAPI_HOST = "127.0.0.1";
 let fastApiProcess: ChildProcess | undefined;
 
+export function getFastApiInternalPort(environment = process.env.NODE_ENV): number {
+  const defaultPort = environment === "development" ? "8100" : "8000";
+  return Number.parseInt(process.env.FASTAPI_INTERNAL_PORT || defaultPort, 10);
+}
+
+export function shouldStartFastApiSidecar(
+  environment = process.env.NODE_ENV,
+  explicitOptIn = process.env.START_FASTAPI_SIDECAR,
+): boolean {
+  return environment !== "development" || explicitOptIn === "true";
+}
+
 function isInternalPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
     const server = net.createServer();
@@ -43,7 +55,7 @@ async function waitForFastApi(port: number): Promise<void> {
 export async function startFastApiService(): Promise<number> {
   if (fastApiProcess) throw new Error("FastAPI service has already been started.");
 
-  const port = Number.parseInt(process.env.FASTAPI_INTERNAL_PORT || "8000", 10);
+  const port = getFastApiInternalPort();
   if (!Number.isInteger(port) || port < 1024 || port > 65535) {
     throw new Error("FASTAPI_INTERNAL_PORT must be a valid non-privileged port.");
   }

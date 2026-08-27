@@ -63,4 +63,6 @@
 - [x] Confirm Autoscale is already the correct active hosting mode; no user hosting-mode change is required for the container runtime.
 - [x] Add a production-mode browser API test proving auth and document clients resolve to the same-origin proxy.
 - [x] Verify a browser request to a protected document API route resolves through the same-origin FastAPI proxy.
+- [x] Prevent the FastAPI internal sidecar from taking the managed development preview port.
+- [x] Start the FastAPI sidecar only in production by default while preserving an explicit local integration-test option.
 - [x] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.

@@ -42,6 +42,8 @@ Verified-login, live document upload, review actions, and public verification sh
 
 > Deployment note, 2026-08-27: Autoscale is already the correct active hosting mode. Local combined-runtime checks passed, but the live `/health` route still returns the prior frontend 404 page and does not yet reach FastAPI. The remaining issue is publication of the saved container runtime, not a user hosting-mode selection.
 
+> Preview note, 2026-08-27: The FastAPI sidecar now stays disabled during ordinary managed preview sessions and starts automatically in production. This prevents the internal API port from replacing the browser-facing preview. An explicit `START_FASTAPI_SIDECAR=true` opt-in remains available for local integration testing.
+
 ## Sign-off
 
 Record the final test result, outstanding risks, and the decision to deploy or defer. Attach sanitized screenshots, request/response excerpts, and automated-test output separately.
