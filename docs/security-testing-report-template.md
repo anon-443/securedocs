@@ -40,6 +40,8 @@ Describe the tested API base URL, UI URL, roles used, seed data policy, tools (b
 
 Verified-login, live document upload, review actions, and public verification should be added to this record after the FastAPI service is deployed.
 
+> Deployment note, 2026-08-27: Autoscale is already the correct active hosting mode. Local combined-runtime checks passed, but the live `/health` route still returns the prior frontend 404 page and does not yet reach FastAPI. The remaining issue is publication of the saved container runtime, not a user hosting-mode selection.
+
 ## Sign-off
 
 Record the final test result, outstanding risks, and the decision to deploy or defer. Attach sanitized screenshots, request/response excerpts, and automated-test output separately.
