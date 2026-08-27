@@ -9,7 +9,6 @@ import {
   BarChart3,
   Bell,
   CheckCircle2,
-  ChevronDown,
   CircleHelp,
   Clock3,
   Download,
@@ -316,10 +315,9 @@ export default function SecureDocsDashboard() {
           <div><span className="brand-word">secure</span><span className="brand-word brand-word--light">docs</span></div>
         </div>
 
-        <div className="workspace-chip">
+        <div className="workspace-chip" aria-label="SecureDocs workspace identity">
           <div className="workspace-orb">A</div>
-          <div className="min-w-0"><p>Acme Holdings</p><span>Enterprise workspace</span></div>
-          <ChevronDown size={15} />
+          <div className="min-w-0"><p>{user ? "SecureDocs workspace" : "Workspace preview"}</p><span>Document custody environment</span></div>
         </div>
 
         <nav aria-label="Workspace navigation" className="nav-stack">
@@ -342,8 +340,8 @@ export default function SecureDocsDashboard() {
             <div><strong>Need assistance?</strong><span>View security guidance</span></div>
           </button>
           <button className="profile-card" onClick={() => { setActiveNav("Profile"); setNotice(""); }}>
-            <div className="avatar-ring">AS</div>
-            <div className="min-w-0 text-left"><strong>Adeen Shahzad</strong><span>{role}</span></div>
+            <div className="avatar-ring">{(user?.full_name || "Adeen Shahzad").split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase()}</div>
+            <div className="min-w-0 text-left"><strong>{user?.full_name || "Adeen Shahzad"}</strong><span>{role} account</span></div>
             <MoreHorizontal size={18} />
           </button>
         </div>
@@ -353,7 +351,8 @@ export default function SecureDocsDashboard() {
         <header className="topbar">
           <div className="crumb"><span>SecureDocs</span><span className="crumb-divider">/</span><strong>{activeNav}</strong></div>
           <div className="topbar-actions">
-            <div className="role-switcher" aria-label="Role preview">
+            <div className="role-switcher" aria-label="Role preview controls">
+              <span className="role-switcher-label">View as</span>
               {(["Admin", "Manager", "Employee"] as Role[]).map((roleOption) => (
                 <button key={roleOption} onClick={() => setRoleContext(roleOption)} className={role === roleOption ? "role-active" : ""}>{roleOption}</button>
               ))}

@@ -54,6 +54,24 @@ Verified-login, live document upload, review actions, and public verification sh
 
 > Sidecar-resilience note, 2026-08-27: The Node runtime now retains the spawned FastAPI process reference during readiness checks, preventing a child-process exit from crashing cleanup. Full automated validation passed: `12` frontend tests, `23` backend tests, and lint checks.
 
+> Live configuration confirmation, 2026-08-27: The published non-sensitive configuration health endpoint confirms `production` mode, HTTPS-only cookies, an HTTPS verification link, no localhost verification link, and an HTTPS password-reset link. A fresh non-personal QA registration then returned `201 Created` and triggered a new verification email for link inspection.
+
+> Final inbox confirmation, 2026-08-27: Mailtrap shows the new SecureDocs verification message for the final QA account immediately after the repaired production registration request. Its message body is now being opened only to confirm the expected public destination.
+
+> Sandbox boundary, 2026-08-27: Mailtrap Sandbox is being used correctly for safe test delivery. Messages appear inside the Mailtrap inbox and are not delivered to the recipient's real Gmail account. The project has used five of the fifty available sandbox test messages; no production-email quota is required for internship validation.
+
+> Link-destination confirmation, 2026-08-27: The newest Mailtrap verification email was opened and its one-time link targets the published SecureDocs HTTPS verification route rather than a localhost address. The token was not retained in project records.
+
+> Redacted destination evidence, 2026-08-27: The rendered Mailtrap message visibly begins its one-time link with `https://securedocs-nl6ubzst.manus.space/verify-email?token=`. No token value is recorded or disclosed.
+
+> Dependable rendered-email check, 2026-08-27: The message is rendered inside Mailtrap's accessible email frame. A redacted inspection returned: published verification prefix present, localhost prefix absent, and one-time-token marker present. The token itself was not read, logged, or retained.
+
+> One-time-link action, 2026-08-27: The final QA verification link was opened programmatically from the Mailtrap email frame without disclosing its token. The browser became temporarily unavailable immediately afterward, so account-confirmation success is being verified with the next secure sign-in response rather than inferred from navigation alone.
+
+> Verification-flow control, 2026-08-27: Opening the verification page alone did not confirm the account, as intended; the API denied sign-in before the page's explicit confirmation action. A fresh verification link was requested successfully and its new Mailtrap message arrived for the deliberate confirmation-step check.
+
+> Final confirmation attempt, 2026-08-27: The replacement one-time link was opened from the Mailtrap message without disclosing the token. Browser automation became unavailable before the public page's explicit confirmation control could be observed, so verified sign-in remains pending and is not inferred from navigation.
+
 > Rollout verification, 2026-08-27: The repaired production container started successfully. On the live SecureDocs domain, `/health` returned the FastAPI success response and `/api/v1/auth/me` returned the expected unauthenticated `401` response through the public same-origin proxy.
 
 > Fresh-link verification, 2026-08-27: A second valid non-personal QA registration was accepted by the repaired live API with `201 Created`. The Mailtrap sandbox inbox was opened to inspect the new message; its initial browser render was blank, so inbox loading is being rechecked before the corrected URL is confirmed.

@@ -66,8 +66,10 @@
 - [x] Fix production parsing of allowed browser origins so the FastAPI container can start with the live SecureDocs configuration.
 - [x] Redeploy after the origin-parser repair and verify FastAPI starts successfully with the live production configuration.
 - [x] Confirm the live `/health` and one protected `/api/v1` route work after the parser-repair rollout.
-- [ ] Confirm a newly generated verification email uses the live SecureDocs verification URL rather than localhost.
-- [ ] Expose non-sensitive live configuration status to diagnose verification-link destination without revealing credentials.
+- [x] Confirm a newly generated verification email uses the live SecureDocs verification URL rather than localhost.
+- [x] Capture dependable redacted evidence that the newest verification email starts with the published SecureDocs verification route.
+- [ ] Complete the corrected verification link flow and sign in successfully with the verified QA account.
+- [x] Expose non-sensitive live configuration status to diagnose verification-link destination without revealing credentials.
 - [x] Prevent a FastAPI sidecar exit during startup from crashing the Node runtime error path.
 - [x] Add public email-verification and password-reset pages that consume SecureDocs one-time links safely.
 - [ ] Verify live account registration, Mailtrap verification delivery, and verified-email login.
@@ -78,3 +80,9 @@
 - [x] Prevent the FastAPI internal sidecar from taking the managed development preview port.
 - [x] Start the FastAPI sidecar only in production by default while preserving an explicit local integration-test option.
 - [x] Re-verify desktop/mobile visual quality, functionality, accessibility states, and automated tests after the rebuild.
+- [x] Keep the complete desktop workspace sidebar visible and fixed while the document workspace scrolls independently.
+- [x] Increase the size, contrast, and visual priority of workspace navigation labels and icons.
+- [x] Strengthen the readability and prominence of the workspace greeting, role state, and primary upload action.
+- [x] Refine the organisation selector, help card, and account identity block so their visual hierarchy is clear and intentional.
+- [x] Explain and refine the role selector so its purpose is obvious and it is not mistaken for an account-security action.
+- [x] Verify the revised workspace at desktop and mobile sizes, including fixed-navigation behavior while scrolling.

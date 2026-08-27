@@ -24,3 +24,7 @@ The refined landing hero was checked at 1440 px desktop and 390 px mobile widths
 After the requested scale adjustment, the desktop evidence card was reduced to a compact, balanced footprint while retaining the aligned record fields, readable values, and proof-chain treatment.
 
 The reduced card was also verified at 390 px mobile width. It remains within the viewport, its title and seal retain clear separation, and the visible proof metadata stays aligned and legible without horizontal overflow.
+
+The workspace refinement was checked at 1440 × 1000. The desktop sidebar uses sticky positioning and remained aligned at the viewport top after the main workspace was scrolled. Navigation labels and icons, the workspace identity card, the assistance card, and the account identity block now carry stronger contrast and more deliberate scale. The top controls also now label the three roles as **View as**, making the control's preview purpose clear.
+
+The same workspace was checked at 390 × 844. The sidebar is intentionally hidden at this breakpoint, while the stronger heading, primary upload action, role controls, metrics, registry, verification panel, and control-center panel remain readable in a one-column layout.
