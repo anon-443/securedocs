@@ -86,3 +86,5 @@
 - [x] Refine the organisation selector, help card, and account identity block so their visual hierarchy is clear and intentional.
 - [x] Explain and refine the role selector so its purpose is obvious and it is not mistaken for an account-security action.
 - [x] Verify the revised workspace at desktop and mobile sizes, including fixed-navigation behavior while scrolling.
+- [ ] Publish the latest workspace visual refinements and verify the live SecureDocs workspace shows the fixed sidebar, clear workspace identity, and View as role-preview label.
+- [ ] Re-run live desktop and mobile workspace verification after publication and update the feature-status audit.
