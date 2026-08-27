@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { getFastApiInternalPort, isFastApiRoute, shouldStartFastApiSidecar } from "./fastapi";
+import { getFastApiInternalPort, isFastApiRoute, shouldStartFastApiSidecar, terminateFastApiProcess } from "./fastapi";
 
 describe("FastAPI proxy route selection", () => {
   it("routes the versioned API, docs, and health probes to the internal FastAPI service", () => {
@@ -23,5 +23,12 @@ describe("FastAPI proxy route selection", () => {
     expect(shouldStartFastApiSidecar("development", undefined)).toBe(false);
     expect(shouldStartFastApiSidecar("development", "true")).toBe(true);
     expect(shouldStartFastApiSidecar("production", undefined)).toBe(true);
+  });
+
+  it("does not throw when cleanup runs after an early child-process exit", () => {
+    expect(() => terminateFastApiProcess(undefined)).not.toThrow();
+    const kill = vi.fn();
+    terminateFastApiProcess({ kill });
+    expect(kill).toHaveBeenCalledWith("SIGTERM");
   });
 });

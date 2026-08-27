@@ -68,6 +68,7 @@
 - [x] Confirm the live `/health` and one protected `/api/v1` route work after the parser-repair rollout.
 - [ ] Confirm a newly generated verification email uses the live SecureDocs verification URL rather than localhost.
 - [ ] Expose non-sensitive live configuration status to diagnose verification-link destination without revealing credentials.
+- [x] Prevent a FastAPI sidecar exit during startup from crashing the Node runtime error path.
 - [x] Add public email-verification and password-reset pages that consume SecureDocs one-time links safely.
 - [ ] Verify live account registration, Mailtrap verification delivery, and verified-email login.
 - [ ] Verify a live employee upload, Manager review, protected preview/download, public QR verification, audit history, and Admin security alert workflow.

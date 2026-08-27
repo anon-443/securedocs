@@ -1,8 +1,8 @@
-import type { Express, Request, Response } from "express";
-import { request as httpRequest } from "node:http";
 import { spawn, type ChildProcess } from "node:child_process";
+import { request as httpRequest } from "node:http";
 import net from "node:net";
 import { join } from "node:path";
+import type { Express, Request, Response } from "express";
 
 export const FASTAPI_PROXY_PREFIXES = ["/api/v1", "/docs", "/redoc", "/health"] as const;
 
@@ -38,6 +38,10 @@ function logFastApiOutput(chunk: Buffer, stream: "stdout" | "stderr") {
   if (message) console[stream === "stderr" ? "error" : "log"](`[FastAPI] ${message}`);
 }
 
+export function terminateFastApiProcess(processHandle: Pick<ChildProcess, "kill"> | undefined): void {
+  processHandle?.kill("SIGTERM");
+}
+
 async function waitForFastApi(port: number): Promise<void> {
   const healthUrl = `http://${FASTAPI_HOST}:${port}/health`;
   for (let attempt = 0; attempt < 40; attempt += 1) {
@@ -63,7 +67,7 @@ export async function startFastApiService(): Promise<number> {
     throw new Error(`FASTAPI_INTERNAL_PORT ${port} is already in use.`);
   }
 
-  fastApiProcess = spawn(
+  const spawnedProcess = spawn(
     "python3",
     ["-m", "uvicorn", "app.main:app", "--host", FASTAPI_HOST, "--port", String(port), "--no-access-log"],
     {
@@ -72,22 +76,23 @@ export async function startFastApiService(): Promise<number> {
       stdio: ["ignore", "pipe", "pipe"],
     },
   );
-  fastApiProcess.stdout?.on("data", (chunk: Buffer) => logFastApiOutput(chunk, "stdout"));
-  fastApiProcess.stderr?.on("data", (chunk: Buffer) => logFastApiOutput(chunk, "stderr"));
-  fastApiProcess.once("exit", (code, signal) => {
-    fastApiProcess = undefined;
+  fastApiProcess = spawnedProcess;
+  spawnedProcess.stdout?.on("data", (chunk: Buffer) => logFastApiOutput(chunk, "stdout"));
+  spawnedProcess.stderr?.on("data", (chunk: Buffer) => logFastApiOutput(chunk, "stderr"));
+  spawnedProcess.once("exit", (code, signal) => {
+    if (fastApiProcess === spawnedProcess) fastApiProcess = undefined;
     console.error(`[FastAPI] Process exited before shutdown (code=${code ?? "none"}, signal=${signal ?? "none"}).`);
   });
 
   try {
     await waitForFastApi(port);
   } catch (error) {
-    fastApiProcess.kill("SIGTERM");
-    fastApiProcess = undefined;
+    terminateFastApiProcess(spawnedProcess);
+    if (fastApiProcess === spawnedProcess) fastApiProcess = undefined;
     throw error;
   }
 
-  const stopFastApi = () => fastApiProcess?.kill("SIGTERM");
+  const stopFastApi = () => terminateFastApiProcess(fastApiProcess);
   process.once("SIGTERM", stopFastApi);
   process.once("SIGINT", stopFastApi);
   return port;
