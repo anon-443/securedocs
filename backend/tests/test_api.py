@@ -15,16 +15,10 @@ def test_health_endpoint_has_security_headers() -> None:
     assert response.headers["referrer-policy"] == "no-referrer"
 
 
-def test_configuration_health_exposes_only_safe_email_link_posture() -> None:
+def test_configuration_health_is_not_exposed_after_deployment_diagnostics() -> None:
     response = client.get("/health/configuration", headers={"host": "localhost"})
 
-    assert response.status_code == 200
-    body = response.json()
-    assert body["status"] == "ok"
-    assert "email_verification_frontend_url" not in body
-    assert "smtp_password" not in body
-    assert isinstance(body["verification_link_uses_https"], bool)
-    assert isinstance(body["verification_link_uses_localhost"], bool)
+    assert response.status_code == 404
 
 
 def test_registration_rejects_invalid_input_before_persistence() -> None:

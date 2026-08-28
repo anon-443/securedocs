@@ -26,7 +26,7 @@
 - [x] Add a threat-model document and a secure-development testing-report template alongside the OWASP Top 10 checklist.
 - [x] Add a demo script to the architecture, ERD, API, deployment, README, and submission documentation set.
 - [x] Configure deployment guidance for React, FastAPI, PostgreSQL, object storage, environment variables, and CORS/cookie settings.
-- [ ] Complete and document the remaining end-to-end staging verification for email delivery, role actions, upload storage, review, preview, public verification, and alerts once SMTP and production object-storage settings are configured.
+- [x] Complete and document the remaining end-to-end staging verification for email delivery, role actions, upload storage, review, preview, public verification, and alerts once SMTP and production object-storage settings are configured.
 - [ ] Create the final project checkpoint and submit-ready GitHub repository workflow.
 - [x] Redesign SecureDocs with a dark navy-and-teal visual system inspired by the provided operational-product references.
 - [x] Build a properly sized public landing page with concise formatted copy and clear access paths.
@@ -68,12 +68,17 @@
 - [x] Confirm the live `/health` and one protected `/api/v1` route work after the parser-repair rollout.
 - [x] Confirm a newly generated verification email uses the live SecureDocs verification URL rather than localhost.
 - [x] Capture dependable redacted evidence that the newest verification email starts with the published SecureDocs verification route.
-- [ ] Complete the corrected verification link flow and sign in successfully with the verified QA account.
+- [x] Complete the corrected Mailtrap-delivered verification link flow and sign in successfully with the same QA account.
 - [x] Expose non-sensitive live configuration status to diagnose verification-link destination without revealing credentials.
 - [x] Prevent a FastAPI sidecar exit during startup from crashing the Node runtime error path.
 - [x] Add public email-verification and password-reset pages that consume SecureDocs one-time links safely.
-- [ ] Verify live account registration, Mailtrap verification delivery, and verified-email login.
-- [ ] Verify a live employee upload, Manager review, protected preview/download, public QR verification, audit history, and Admin security alert workflow.
+- [x] Verify one full live registration, Mailtrap delivery, public verification page action, and verified-email login chain.
+- [x] Verify a live employee upload, Manager review, protected preview/download, public QR verification, audit history, and Admin security alert workflow.
+- [x] Inspect only anonymous live QA role and verification counts to prepare acceptance testing without exposing account details.
+- [x] Provision disposable non-personal verified QA accounts for Admin, Manager, and Employee acceptance testing without exposing credentials.
+- [x] Run the disposable live QA flow for employee upload, Manager approval, protected preview/download, public verification, audit history, and failed-login alert visibility.
+- [x] Exercise the live email-verification endpoint with an opaque disposable one-time token and confirm verified-account login without disclosing the token.
+- [x] Record redacted proof that the Mailtrap-delivered public verification page action succeeds before closing email-flow acceptance.
 - [x] Confirm Autoscale is already the correct active hosting mode; no user hosting-mode change is required for the container runtime.
 - [x] Add a production-mode browser API test proving auth and document clients resolve to the same-origin proxy.
 - [x] Verify a browser request to a protected document API route resolves through the same-origin FastAPI proxy.
@@ -96,6 +101,9 @@
 - [x] Measure the rendered published mobile workspace in a real browser for role controls, upload prominence, hidden desktop rail, and horizontal-overflow status.
 - [x] Increase desktop top-bar breadcrumb, role-control, and notification-control prominence without reducing responsive clarity.
 - [x] Remove the oversized vertical gap below the workspace top bar so the content begins at a more deliberate position.
-- [ ] Verify the refined top bar at desktop and mobile sizes and publish the corrected layout.
-- [ ] Publish the refined top bar and verify its larger controls and reduced top spacing on the live SecureDocs workspace.
-- [ ] Record live desktop and mobile evidence for the published top-bar refinement.
+- [x] Verify the refined top bar at desktop and mobile sizes and publish the corrected layout.
+- [x] Publish the refined top bar and verify its larger controls and reduced top spacing on the live SecureDocs workspace.
+- [x] Record live desktop and mobile evidence for the published top-bar refinement.
+- [x] Measure the published top bar at desktop and mobile viewports for control dimensions and the heading's distance from the bar.
+- [x] Increase workspace text sizing and legibility across dashboard cards, document registry, audit activity, and controls while preserving responsive layout.
+- [ ] Publish the enlarged workspace typography and re-verify it on the live SecureDocs domain at desktop and mobile widths.

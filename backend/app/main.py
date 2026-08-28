@@ -87,20 +87,6 @@ def health() -> dict[str, str]:
     return {"status": "ok", "service": "securedocs-api"}
 
 
-@app.get("/health/configuration", tags=["System"])
-def configuration_health() -> dict[str, bool | str]:
-    """Expose only deployment posture signals, never raw configuration or credentials."""
-
-    return {
-        "status": "ok",
-        "environment": settings.app_env,
-        "secure_cookies": settings.cookie_secure,
-        "verification_link_uses_https": settings.email_verification_frontend_url.startswith("https://"),
-        "verification_link_uses_localhost": "localhost" in settings.email_verification_frontend_url,
-        "password_reset_link_uses_https": settings.password_reset_frontend_url.startswith("https://"),
-    }
-
-
 @app.get("/health/database", tags=["System"])
 def database_health() -> dict[str, str]:
     try:
