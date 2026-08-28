@@ -110,3 +110,4 @@
 - [x] Commit and push the post-verification documentation and completed tracker, then confirm the GitHub working tree is clean.
 - [x] Save the final SecureDocs checkpoint after the post-verification commit and clean-tree check.
 - [x] Increase landing navigation and feature-strip text size for clearer desktop readability without disrupting the evidence-custody layout.
+- [x] Keep the workspace role description and workspace-identity subtitle on one line at standard desktop widths.

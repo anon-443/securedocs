@@ -17,6 +17,11 @@ describe("SecureDocs workspace typography", () => {
     expect(workspaceStyles).toContain("@media(max-width:520px){.dashboard-heading p:not(.eyebrow){font-size:14px}");
     expect(workspaceStyles).toContain(".activity-list p{font-size:12px}");
   });
+
+  it("keeps the requested desktop workspace descriptions on one line without changing mobile wrapping", () => {
+    expect(workspaceStyles).toContain("@media(min-width:801px){.workspace-chip span{white-space:nowrap;font-size:11px");
+    expect(workspaceStyles).toContain("@media(min-width:1100px){.dashboard-heading p:not(.eyebrow){max-width:900px;white-space:nowrap}");
+  });
 });
 
 describe("SecureDocs landing typography", () => {
