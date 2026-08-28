@@ -19,7 +19,7 @@ This document tracks the internship requirements against the codebase. A feature
 
 ## Current build focus
 
-The user-facing experience is built around a forensic evidence-custody visual system rather than a generic dashboard. The published workspace navigation is fixed on desktop, has stronger text and icon hierarchy, and labels the top role buttons as a **View as** visual preview. The larger operational typography update across cards, documents, activity, and controls has passed local desktop and mobile validation and is pending final publication verification.
+The user-facing experience is built around a forensic evidence-custody visual system rather than a generic dashboard. The published workspace navigation is fixed on desktop, has stronger text and icon hierarchy, and labels the top role buttons as a **View as** visual preview. The larger operational typography update across cards, documents, activity, and controls has passed both local and live desktop/mobile validation.
 
 **Production acceptance update — 2026-08-28:** The completed acceptance record includes published Mailtrap-delivered email confirmation with same-account verified login, Employee upload, Manager approval, protected preview/download, privacy-minimal public verification, audit immutability, and failed-login alert visibility. The full concise evidence record is maintained in `docs/security-testing-report-template.md`.
 
