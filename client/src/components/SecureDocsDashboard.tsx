@@ -42,45 +42,6 @@ const roleLabels: Record<"admin" | "manager" | "employee", Role> = {
   employee: "Employee",
 };
 
-const documents = [
-  {
-    id: "DOC-2091",
-    name: "Certificate of Incorporation",
-    type: "PDF",
-    owner: "Corporate Affairs",
-    updated: "12 minutes ago",
-    status: "Approved",
-    statusTone: "approved",
-  },
-  {
-    id: "DOC-2088",
-    name: "Vendor Compliance Agreement",
-    type: "DOCX",
-    owner: "Procurement",
-    updated: "48 minutes ago",
-    status: "Pending review",
-    statusTone: "pending",
-  },
-  {
-    id: "DOC-2084",
-    name: "Quarterly Operations Report",
-    type: "PDF",
-    owner: "Operations",
-    updated: "Yesterday",
-    status: "Needs revision",
-    statusTone: "revision",
-  },
-  {
-    id: "DOC-2078",
-    name: "Identity Verification Record",
-    type: "PNG",
-    owner: "Human Resources",
-    updated: "18 Aug 2026",
-    status: "Approved",
-    statusTone: "approved",
-  },
-] as const;
-
 const navigationByRole: Record<Role, { label: string; icon: typeof LayoutDashboard; active?: boolean }[]> = {
   Admin: [
     { label: "Overview", icon: LayoutDashboard, active: true },
@@ -181,7 +142,7 @@ export default function SecureDocsDashboard() {
     })),
     [apiDocuments, user?.id],
   );
-  const visibleDocuments = liveDocuments.length > 0 ? liveDocuments : documents;
+  const visibleDocuments = liveDocuments;
 
   const liveActivity = apiActivity.map((event) => ({
     id: event.id,
@@ -197,28 +158,7 @@ export default function SecureDocsDashboard() {
   );
   const isOverview = activeNav === "Overview" || activeNav === "My workspace";
   const pendingReviewItems = visibleDocuments.filter((document) => document.status === "Pending review").map((document) => ({ id: "apiId" in document ? document.apiId : null, label: document.name, owner: document.owner, type: document.type }));
-  const verifiedItems = visibleDocuments.filter((document) => document.status === "Approved").map((document) => ({ id: document.id, label: document.name, reference: "apiId" in document ? `SD-${document.apiId.slice(0, 8).toUpperCase()}` : "SD-2026-8F3C72A19B" }));
-
-  const metricsByRole: Record<Role, { label: string; value: string; trend: string; icon: typeof FileText; accent: "blue" | "mint" | "amber" | "violet" }[]> = {
-    Admin: [
-      { label: "Total documents", value: "1,248", trend: "+8.4% this month", icon: FileText, accent: "blue" },
-      { label: "Approved records", value: "1,032", trend: "82.7% verified", icon: CheckCircle2, accent: "mint" },
-      { label: "Awaiting review", value: "36", trend: "9 assigned today", icon: Clock3, accent: "amber" },
-      { label: "Security alerts", value: "04", trend: "2 require review", icon: AlertTriangle, accent: "violet" },
-    ],
-    Manager: [
-      { label: "Review queue", value: "36", trend: "9 assigned today", icon: FileCheck2, accent: "blue" },
-      { label: "Approved today", value: "18", trend: "Average 4m 12s", icon: CheckCircle2, accent: "mint" },
-      { label: "Needs revision", value: "07", trend: "2 due today", icon: AlertTriangle, accent: "amber" },
-      { label: "Verified records", value: "308", trend: "+12 this week", icon: QrCode, accent: "violet" },
-    ],
-    Employee: [
-      { label: "My documents", value: "18", trend: "3 updated this month", icon: FileText, accent: "blue" },
-      { label: "Approved", value: "14", trend: "Ready to verify", icon: CheckCircle2, accent: "mint" },
-      { label: "Pending review", value: "03", trend: "Next update in 1 day", icon: Clock3, accent: "amber" },
-      { label: "Reports", value: "11", trend: "Available securely", icon: Archive, accent: "violet" },
-    ],
-  };
+  const verifiedItems = visibleDocuments.filter((document) => document.status === "Approved").map((document) => ({ id: document.id, label: document.name, reference: `SD-${document.apiId.slice(0, 8).toUpperCase()}` }));
 
   const setRoleContext = (nextRole: Role) => {
     if (user) {
@@ -305,7 +245,7 @@ export default function SecureDocsDashboard() {
     { label: "Approved records", value: String(overview.approved_documents), trend: "Verified status", icon: CheckCircle2, accent: "mint" as const },
     { label: "Awaiting review", value: String(overview.pending_review_documents), trend: "Current queue", icon: Clock3, accent: "amber" as const },
     { label: user?.role === "admin" ? "Security alerts" : "Workspace state", value: String(overview.unresolved_alerts ?? 0), trend: "Live API signal", icon: AlertTriangle, accent: "violet" as const },
-  ] : metricsByRole[role];
+  ] : [];
 
   return (
     <div className="securedocs-shell">
@@ -340,8 +280,8 @@ export default function SecureDocsDashboard() {
             <div><strong>Need assistance?</strong><span>View security guidance</span></div>
           </button>
           <button className="profile-card" onClick={() => { setActiveNav("Profile"); setNotice(""); }}>
-            <div className="avatar-ring">{(user?.full_name || "Adeen Shahzad").split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase()}</div>
-            <div className="min-w-0 text-left"><strong>{user?.full_name || "Adeen Shahzad"}</strong><span>{role} account</span></div>
+            <div className="avatar-ring">{(user?.full_name || "?").split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase()}</div>
+            <div className="min-w-0 text-left"><strong>{user?.full_name || "Not signed in"}</strong><span>{user ? `${role} account` : "Sign in to continue"}</span></div>
             <MoreHorizontal size={18} />
           </button>
         </div>
@@ -365,7 +305,7 @@ export default function SecureDocsDashboard() {
           <section className="dashboard-heading">
             <div>
               <p className="eyebrow">{user ? `${role} · live API session` : `${role} workspace · local preview`}</p>
-              <h1>{role === "Employee" ? "Good morning, Adeen" : "Document intelligence, protected"}</h1>
+              <h1>{user && role === "Employee" ? `Welcome, ${user.full_name}` : "Document intelligence, protected"}</h1>
               <p>{roleDescriptions[role]}</p>
             </div>
             <Button className="upload-button" onClick={() => user ? setUploadOpen(true) : setForbidden("Sign in with a verified SecureDocs account before uploading a document") }>
@@ -406,7 +346,7 @@ export default function SecureDocsDashboard() {
                         {(user?.role === "admin" || document.owner === "You") && <button disabled={actingOnDocument === document.apiId} title="Edit title" aria-label={`Edit ${document.name}`} onClick={() => handleDocumentAction(document.apiId, "edit", document.name)}><Pencil size={14} /></button>}
                         {(user?.role === "admin" || user?.role === "manager") && document.status === "Pending review" && <><button disabled={actingOnDocument === document.apiId} title="Approve" aria-label={`Approve ${document.name}`} onClick={() => handleDocumentAction(document.apiId, "approve")}><CheckCircle2 size={15} /></button><button disabled={actingOnDocument === document.apiId} title="Reject" aria-label={`Reject ${document.name}`} onClick={() => handleDocumentAction(document.apiId, "reject")}><Archive size={15} /></button></>}
                         {(user?.role === "admin" || document.owner === "You") && <button disabled={actingOnDocument === document.apiId} title="Delete" aria-label={`Delete ${document.name}`} onClick={() => handleDocumentAction(document.apiId, "delete")}><Trash2 size={15} /></button>}
-                      </> : <button aria-label={`Preview ${document.name}`} onClick={() => setNotice(`${document.name} will open with authorization-aware preview and download controls after you sign in`)}><MoreHorizontal size={18} /></button>}
+                      </> : null}
                     </div>
                   </div>
                 ))}
@@ -418,15 +358,12 @@ export default function SecureDocsDashboard() {
               <section className="verification-card">
                 <div className="verification-top"><div><p className="panel-kicker">Authenticity verification</p><h2>Verify with confidence</h2></div><div className="verified-orb"><ShieldCheck size={20} /></div></div>
                 <p>Every approved document receives an immutable reference code and a QR-linked public verification record</p>
-                <div className="verification-code"><div className="qr-grid"><QrCode size={46} strokeWidth={1.7} /></div><div><span>REFERENCE CODE</span><strong>SD-2026-8F3C72A19B</strong><em>Approved · 25 Aug 2026</em></div></div>
-                <a className="verify-link" href="/verify/SD-2026-8F3C72A19B">Open verification record <ArrowUpRight size={15} /></a>
+                {verifiedItems[0] ? <><div className="verification-code"><div className="qr-grid"><QrCode size={46} strokeWidth={1.7} /></div><div><span>REFERENCE CODE</span><strong>{verifiedItems[0].reference}</strong><em>Approved · from your records</em></div></div><a className="verify-link" href={`/verify/${verifiedItems[0].reference}`}>Open verification record <ArrowUpRight size={15} /></a></> : <div className="empty-documents" role="status"><QrCode size={18} /><p><strong>No approved documents yet</strong><span>Approved records will appear here with their verification code</span></p></div>}
               </section>
 
               <section className="security-card">
                 <div className="panel-heading"><div><p className="panel-kicker">Security signal</p><h2>Control center</h2></div><LockKeyhole size={19} /></div>
-                <div className="security-score"><div><strong>{user ? Math.max(0, 100 - alerts.length * 8) : 94}</strong><span>/100</span></div><p>{user ? `${alerts.length} unresolved alerts` : "Security posture is strong"}</p></div>
-                <div className="security-progress"><span style={{ width: `${user ? Math.max(0, 100 - alerts.length * 8) : 94}%` }} /></div>
-                <div className="security-points"><span><CheckCircle2 size={15} /> JWT rotation enabled</span><span><CheckCircle2 size={15} /> {user ? `${alerts.filter((alert) => alert.severity === "critical").length} critical alerts` : "0 critical alerts"}</span></div>
+                {user ? <><div className="security-score"><div><strong>{Math.max(0, 100 - alerts.length * 8)}</strong><span>/100</span></div><p>{alerts.length} unresolved alerts</p></div><div className="security-progress"><span style={{ width: `${Math.max(0, 100 - alerts.length * 8)}%` }} /></div><div className="security-points"><span><CheckCircle2 size={15} /> JWT rotation enabled</span><span><CheckCircle2 size={15} /> {alerts.filter((alert) => alert.severity === "critical").length} critical alerts</span></div></> : <div className="empty-documents" role="status"><LockKeyhole size={18} /><p><strong>Sign in to view security posture</strong><span>Security signals are only loaded from your authenticated account</span></p></div>}
               </section>
             </div>
           </section>
@@ -434,14 +371,10 @@ export default function SecureDocsDashboard() {
           <section className="panel activity-panel">
             <div className="panel-heading"><div><p className="panel-kicker">Immutable audit trail</p><h2>Recent activity</h2></div><button className="text-button" onClick={() => setNotice("Audit events are append-only and include a tamper-evident hash chain") }>Audit log <ArrowUpRight size={15} /></button></div>
             <div className="activity-list">
-              {liveActivity.length > 0 ? liveActivity.slice(0, 5).map((event) => <div key={event.id}><div className={`activity-icon activity-icon--${event.tone}`}><Activity size={16} /></div><p><strong>{event.title}</strong><span>{event.detail}</span></p><StatusPill tone={event.tone === "security" ? "revision" : "approved"}>{event.outcome}</StatusPill></div>) : <>
-              <div><div className="activity-icon activity-icon--upload"><Upload size={16} /></div><p><strong>Vendor Compliance Agreement</strong> was submitted for review<span>Procurement · 48 minutes ago</span></p><StatusPill tone="pending">Pending</StatusPill></div>
-              <div><div className="activity-icon activity-icon--verified"><FileCheck2 size={16} /></div><p><strong>Certificate of Incorporation</strong> passed authenticity verification<span>Public verification · 1 hour ago</span></p><StatusPill tone="approved">Verified</StatusPill></div>
-              <div><div className="activity-icon activity-icon--security"><KeyRound size={16} /></div><p>Role-sensitive access was reviewed by an administrator<span>Security center · 3 hours ago</span></p><StatusPill tone="neutral">Logged</StatusPill></div>
-              </>}
+              {liveActivity.length > 0 ? liveActivity.slice(0, 5).map((event) => <div key={event.id}><div className={`activity-icon activity-icon--${event.tone}`}><Activity size={16} /></div><p><strong>{event.title}</strong><span>{event.detail}</span></p><StatusPill tone={event.tone === "security" ? "revision" : "approved"}>{event.outcome}</StatusPill></div>) : <div className="empty-documents" role="status"><Activity size={18} /><p><strong>No recent activity</strong><span>Audit events will appear here after activity is recorded</span></p></div>}
             </div>
           </section>
-          </> : activeNav === "Review queue" ? <ReviewQueuePanel items={pendingReviewItems} onReview={(id, action) => id ? handleDocumentAction(id, action) : setNotice("Sign in to review live pending records")} /> : activeNav === "Profile" ? <ProfilePanel user={user} activity={myActivity} onAvatarUpload={handleAvatarUpload} onChangePassword={handlePasswordChange} /> : activeNav === "Users & roles" ? <AdministrationPanel users={users} onRoleChange={handleRoleChange} /> : activeNav === "Verification" || activeNav === "Verification reports" ? <VerificationPanel items={verifiedItems} /> : activeNav === "Audit activity" || activeNav === "Activity" ? <AuditPanel activity={apiActivity} /> : activeNav === "Security center" || activeNav === "Security settings" ? <SecurityPanel alerts={alerts} /> : <FocusedWorkspacePanel view={activeNav} role={role} documentCount={visibleDocuments.length} pendingCount={pendingReviewItems.length} alertCount={alerts.length} userName={user?.full_name || "Adeen Shahzad"} />}
+          </> : activeNav === "Review queue" ? <ReviewQueuePanel items={pendingReviewItems} onReview={(id, action) => id ? handleDocumentAction(id, action) : setNotice("Sign in to review live pending records")} /> : activeNav === "Profile" ? <ProfilePanel user={user} activity={myActivity} onAvatarUpload={handleAvatarUpload} onChangePassword={handlePasswordChange} /> : activeNav === "Users & roles" ? <AdministrationPanel users={users} onRoleChange={handleRoleChange} /> : activeNav === "Verification" || activeNav === "Verification reports" ? <VerificationPanel items={verifiedItems} /> : activeNav === "Audit activity" || activeNav === "Activity" ? <AuditPanel activity={apiActivity} /> : activeNav === "Security center" || activeNav === "Security settings" ? <SecurityPanel alerts={alerts} /> : <FocusedWorkspacePanel view={activeNav} role={role} documentCount={visibleDocuments.length} pendingCount={pendingReviewItems.length} alertCount={alerts.length} userName={user?.full_name || "Not signed in"} />}
 
           {uploadOpen && <div className="upload-overlay" role="presentation"><form onSubmit={submitUpload} className="upload-modal" role="dialog" aria-modal="true" aria-labelledby="upload-title" aria-describedby="upload-description"><div className="panel-heading"><div><p className="panel-kicker">Secure document intake</p><h2 id="upload-title">Upload for review</h2></div><button type="button" className="text-button" onClick={() => setUploadOpen(false)} autoFocus>Close</button></div><p id="upload-description">Files are validated by FastAPI before private storage and audit logging<br />Accepted types: PDF, DOCX, JPG, PNG, and WEBP</p><label>Document title<input required minLength={2} value={uploadTitle} onChange={(event) => setUploadTitle(event.target.value)} /></label><label>Document description <span>optional</span><textarea value={uploadDescription} onChange={(event) => setUploadDescription(event.target.value)} /></label><label>Choose file<input required type="file" accept=".pdf,.docx,image/jpeg,image/png,image/webp" onChange={(event) => setUploadFile(event.target.files?.[0] || null)} /></label>{uploadError && <div className="upload-error" role="alert">{uploadError}</div>}<div className="upload-actions"><button type="button" onClick={() => setUploadOpen(false)}>Cancel</button><Button disabled={uploading}>{uploading ? "Validating & uploading" : "Submit for review"}</Button></div></form></div>}
         </div>
