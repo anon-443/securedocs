@@ -1,0 +1,13 @@
+flowchart LR
+    U[Browser user] --> FE[React + TypeScript frontend]
+    FE -->|HTTPS authenticated REST| API[FastAPI API]
+    API --> AUTH[JWT authentication + server-side RBAC]
+    API --> DOC[Document, review and verification APIs]
+    API --> AUDIT[Audit and security event service]
+    API --> DB[(PostgreSQL)]
+    DOC --> STORE[Protected document storage]
+    DOC --> PUB[Public verification endpoint]
+    PUB --> PROOF[Minimal authenticity proof\nprivate source remains hidden]
+    DB --> USERS[Users and roles]
+    DB --> RECORDS[Documents and review records]
+    DB --> EVENTS[Audit and security events]
